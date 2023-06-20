@@ -31,9 +31,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: ListView.builder(
                   itemCount: 30,
                   itemBuilder: ((context, index) => CustomerCard(
-                        description: ((customer_records as List)[index]
-                            ["customer_details"]["descriptionÍ"]) as String,
-                      )),
+                      description: ("naibcgsvuxavcdgvyxchgy"
+                          // (customer_records as List)[index]
+                          //   ["customer_details"]["descriptionÍ"]) as String,
+                          ))),
                 ),
               )
             ],

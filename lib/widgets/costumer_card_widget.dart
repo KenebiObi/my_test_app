@@ -19,41 +19,49 @@ class CustomerCard extends StatelessWidget {
           ),
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                width: 50.0,
-                height: 50.0,
-                decoration: BoxDecoration(
-                  color: Colors.purple[100],
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-              ),
-              const SizedBox(width: 15.0),
               Flexible(
-                // Use Flexible widget to prevent overflow
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
                   children: [
-                    Text(
-                      "Sis Aka",
-                      softWrap: true,
-                      style: TextStyle(
-                        color: Colors.grey[800],
-                        fontSize: 20.0,
+                    Container(
+                      width: 50.0,
+                      height: 50.0,
+                      decoration: BoxDecoration(
+                        color: Colors.purple[100],
+                        borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    const SizedBox(height: 5.0),
-                    Text(
-                      description,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 18.0,
+                    const SizedBox(width: 15.0),
+                    Flexible(
+                      // Use Flexible widget to prevent overflow
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Sis Aka",
+                            softWrap: true,
+                            style: TextStyle(
+                              color: Colors.grey[800],
+                              fontSize: 20.0,
+                            ),
+                          ),
+                          const SizedBox(height: 5.0),
+                          Text(
+                            description,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 18.0,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
+              Spacer(),
               IconButton(
                 onPressed: () {},
                 icon: Icon(
