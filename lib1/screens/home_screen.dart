@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
-import 'package:my_test_app/screens/customer_recorders_entry_screen.dart';
-import 'package:my_test_app/widgets/alert_dialog_widget.dart';
-import '../widgets/costumer_card_widget.dart';
-import '../customer_records.dart';
+import '../../lib1/screens/customer_recorders_entry_screen.dart';
+import '../../lib1/sources/customer_model.dart';
+import '../../lib1/widgets/customer_list.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,10 +21,67 @@ class _HomeScreenState extends State<HomeScreen> {
   //   );
   // }
 
+  final List<CustomerModel> _registeredCustomerRecords = [
+    CustomerModel(
+      customerName: "Sis Aka",
+      roundNeck: 20,
+      shoulder: 18,
+      bust_chest: 42,
+      sleeve: 14,
+      waist: 32,
+      hip_thigh: 35,
+      length: 40,
+      description: "wgvyxkquwyfduakxgdvjqsfwxavdsvuaxytduvgu",
+    )
+  ];
+
+  void _addCustomerRecord(CustomerModel customerRecord) {
+    setState(() {
+      _registeredCustomerRecords.add(customerRecord);
+    });
+
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        duration: const Duration(seconds: 4),
+        content: const Text("New item added"),
+        dismissDirection: DismissDirection.horizontal,
+      ),
+    );
+  }
+
+  void _deleteCustomerRecord(CustomerModel customerRecord) {
+    final expenseIndex = _registeredCustomerRecords.indexOf(customerRecord);
+    setState(() {
+      _registeredCustomerRecords.remove(customerRecord);
+    });
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 4),
+        content: const Text(
+          "Expenses deleted",
+        ),
+        action: SnackBarAction(
+          label: "Undo",
+          onPressed: () {
+            setState(
+              () {
+                _registeredCustomerRecords.insert(expenseIndex, customerRecord);
+              },
+            );
+          },
+        ),
+        dismissDirection: DismissDirection.horizontal,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
-    final deviceHeight = MediaQuery.of(context).size.height;
+    // final deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 242, 242, 251),
       body: SingleChildScrollView(
@@ -61,23 +117,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               const SizedBox(height: 50.0),
-              SizedBox(
-                height: deviceHeight - 150.0,
-                child: ListView.builder(
-                  itemCount: customer_records.length,
-                  itemBuilder: ((context, index) => CustomerCard(
-                        customer_record: customer_records[
-                            index], // to shorten the method for calling objects from the map
-                        index: index,
-                        customer_name:
-                            customer_records[index]["customer_name"] as String,
-                        customer_description: (
-                            // "Peplun top and skirt with ankara material"
-                            (customer_records[index]["customer_details"]
-                                as Map)["description"] as String),
-                      )),
-                ),
-              ),
+              CustomerList(
+                customerRecords: _registeredCustomerRecords,
+                onDeleteCustomerRecord: _deleteCustomerRecord,
+              )
             ],
           ),
         ),
@@ -86,7 +129,9 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CustomerRecordsEntryScreen(),
+            builder: (context) => CustomerRecordsEntryScreen(
+              onAddCustomerRecord: _addCustomerRecord,
+            ),
           ),
         ),
         backgroundColor: Colors.indigo[100],

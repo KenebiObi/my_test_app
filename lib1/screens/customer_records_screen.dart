@@ -1,16 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:my_test_app/widgets/constant_widgets/screen_title_widget.dart';
-// import '../widgets/customer_records.dart';
+import '../../lib1/sources/customer_model.dart';
+import '../../lib1/widgets/constant_widgets/screen_title_widget.dart';
+// import '../widgets/customer÷_records.dart';
 
 class CustomerRecordsScreen extends StatelessWidget {
   CustomerRecordsScreen({
     super.key,
     required this.customer,
-    required this.index,
   });
-  final Map<String, Object> customer;
-  int index;
+  final CustomerModel customer;
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
@@ -24,7 +22,7 @@ class CustomerRecordsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ScreenTitleWidget(
-                title: customer["customer_name"] as String,
+                title: customer.customerName,
               ),
               const SizedBox(height: 10.0),
               Padding(
@@ -50,7 +48,7 @@ class CustomerRecordsScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Shoulder: ${(customer["customer_details"] as Map)["shoulder"].toString()}",
+                            "Shoulder: ${customer.shoulder}",
                             style: TextStyle(
                               fontSize: 17.0,
                               color: Colors.grey[600],
@@ -58,7 +56,7 @@ class CustomerRecordsScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 15.0),
                           Text(
-                            "Round Neck: ${(customer["customer_details"] as Map)["neck"].toString()}",
+                            "Round Neck: ${customer.roundNeck}",
                             style: TextStyle(
                               fontSize: 17.0,
                               color: Colors.grey[600],
@@ -66,7 +64,7 @@ class CustomerRecordsScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 15.0),
                           Text(
-                            "Chest: ${(customer["customer_details"] as Map)["bust/chest"].toString()}",
+                            "Chest: ${customer.bust_chest}",
                             style: TextStyle(
                               fontSize: 17.0,
                               color: Colors.grey[600],
@@ -74,7 +72,7 @@ class CustomerRecordsScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 15.0),
                           Text(
-                            "Top Length: ${(customer["customer_details"] as Map)["full_length"].toString()}",
+                            "Top Length: ${customer.length}",
                             style: TextStyle(
                               fontSize: 17.0,
                               color: Colors.grey[600],
@@ -82,8 +80,7 @@ class CustomerRecordsScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 15.0),
                           Text(
-                            (customer["customer_details"] as Map)["description"]
-                                .toString(),
+                            customer.shoulder.toString(),
                             style: TextStyle(
                               fontSize: 17.0,
                               color: Colors.grey[600],
@@ -91,8 +88,7 @@ class CustomerRecordsScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 15.0),
                           Text(
-                            (customer["customer_details"] as Map)["description"]
-                                .toString(),
+                            customer.shoulder.toString(),
                             style: TextStyle(
                               fontSize: 17.0,
                               color: Colors.grey[600],
@@ -100,8 +96,7 @@ class CustomerRecordsScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 15.0),
                           Text(
-                            (customer["customer_details"] as Map)["description"]
-                                .toString(),
+                            customer.shoulder.toString(),
                             style: TextStyle(
                               fontSize: 17.0,
                               color: Colors.grey[600],
@@ -109,8 +104,7 @@ class CustomerRecordsScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 15.0),
                           Text(
-                            (customer["customer_details"] as Map)["description"]
-                                .toString(),
+                            customer.shoulder.toString(),
                             style: TextStyle(
                               fontSize: 17.0,
                               color: Colors.grey[600],

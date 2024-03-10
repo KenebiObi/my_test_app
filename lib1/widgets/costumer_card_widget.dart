@@ -1,20 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:my_test_app/widgets/customer_records.dart';
+import '../../lib1/sources/customer_model.dart';
 import '../screens/customer_records_screen.dart';
 
 class CustomerCard extends StatelessWidget {
-  CustomerCard({
-    super.key,
-    required this.customer_name,
-    required this.customer_description,
-    required this.customer_record,
-    required this.index,
-  });
-  String customer_name;
-  String customer_description;
-  final Map<String, Object> customer_record;
-  int index;
+  CustomerCard({super.key, required this.customer});
+  final CustomerModel customer;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +19,7 @@ class CustomerCard extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.circular(8.0),
           ),
-          padding: const EdgeInsets.only(left: 15.0, top: 15.0, bottom: 15.0),
+          padding: const EdgeInsets.only(left: 15.0, top: 15.0, bottom: 10.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -45,11 +36,13 @@ class CustomerCard extends StatelessWidget {
                       child: Center(
                         child: Text(
                           // To select all the initials of the main customer name and display it
-                          (customer_name[0].toLowerCase() == "s" &&
-                                  customer_name[1].toLowerCase() == "i" &&
-                                  customer_name[2].toLowerCase() == "s")
-                              ? customer_name[4]
-                              : customer_name[0],
+                          (customer.customerName.length > 4)
+                              ? (customer.customerName[0] == "S" ||
+                                      customer.customerName[1] == "i" ||
+                                      customer.customerName[2] == "s")
+                                  ? customer.customerName[4]
+                                  : customer.customerName[0]
+                              : customer.customerName[0],
                           style: const TextStyle(
                             fontSize: 25.0,
                             fontWeight: FontWeight.bold,
@@ -65,16 +58,16 @@ class CustomerCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            customer_name,
+                            customer.customerName,
                             softWrap: true,
                             style: TextStyle(
                               color: Colors.grey[800],
                               fontSize: 20.0,
                             ),
                           ),
-                          const SizedBox(height: 5.0),
+                          // const SizedBox(height: 5.0),
                           Text(
-                            customer_description,
+                            customer.description,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               color: Colors.grey[600],
@@ -90,13 +83,12 @@ class CustomerCard extends StatelessWidget {
               IconButton(
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CustomerRecordsScreen(
-                          customer: customer_record,
-                          index: index,
-                        ),
-                      ));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          CustomerRecordsScreen(customer: customer),
+                    ),
+                  );
                 },
                 icon: Icon(
                   CupertinoIcons.right_chevron,
@@ -106,7 +98,6 @@ class CustomerCard extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 15.0)
       ],
     );
   }

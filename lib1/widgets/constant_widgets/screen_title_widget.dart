@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ScreenTitleWidget extends StatelessWidget {
-  ScreenTitleWidget({super.key, required this.title});
-  String title;
+  const ScreenTitleWidget({super.key, required this.title});
+  final String title;
 
   @override
   Widget build(BuildContext context) {
