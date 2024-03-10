@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-final _firebase = FirebaseAuth.instance;
-
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 

@@ -6,6 +6,7 @@ import "package:my_test_app/screens/home_page.dart";
 // import 'package:my_test_app/home_page.dart';
 import 'package:my_test_app/screens/main_screen.dart';
 import "package:my_test_app/screens/signin_screen.dart";
+import "package:my_test_app/screens/splash_screen.dart";
 
 import "firebase_options.dart";
 
@@ -24,21 +25,31 @@ final appTheme = ThemeData(
   useMaterial3: true,
 );
 
-class PasswordApp extends StatelessWidget {
+class PasswordApp extends StatefulWidget {
   const PasswordApp({super.key});
 
+  @override
+  State<PasswordApp> createState() => _PasswordAppState();
+}
+
+class _PasswordAppState extends State<PasswordApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: StreamBuilder(
+      home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return const HomePage();
-          } else {
-            return MainScreen();
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return SplashScreen();
           }
+          if (snapshot.hasData) {
+            print(
+                "oOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOHKKK");
+            return const HomePage();
+          }
+          print("SHIT");
+          return MainScreen();
         },
       ),
       theme: appTheme,

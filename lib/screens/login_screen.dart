@@ -20,37 +20,13 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   Future login() async {
-    // if (_formKey.currentState!.validate()) {
-    //   try {
-    //     UserCredential userCredential =
-    //         await _firebase.signInWithEmailAndPassword(
-    //       email: _emailController.text.trim(),
-    //       password: _passwordController.text.trim(),
-    //     );
-    //   } on FirebaseAuthException catch (error) {
-    //     if (error.code == 'email-already-in-use') {
-    //       // show snackbar
-    //       return;
-    //     }
-    //   }
-    // print(userCredential);
-    // }
-    try {
-      final userCredentials = await _firebase.signInWithEmailAndPassword(
+    if (_formKey.currentState!.validate()) {
+      UserCredential userCredential =
+          await _firebase.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
-      print(userCredentials);
-    } on FirebaseAuthException catch (error) {
-      if (error.code == 'email-already-in-use') {}
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            error.message ?? "Authentication Failed",
-          ),
-        ),
-      );
+      print(userCredential);
     }
   }
 
@@ -92,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 30.0),
                   // Email textfield
                   Container(
-                    height: 50.0,
+                    // height: 50.0,
                     padding: const EdgeInsets.symmetric(horizontal: 6.0),
                     child: TextFormField(
                       controller: _emailController,
@@ -130,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 15.0),
                   // Password textfeild
                   Container(
-                    height: 50.0,
+                    // height: 50.0,
                     padding: const EdgeInsets.symmetric(horizontal: 6.0),
                     child: TextFormField(
                       controller: _passwordController,

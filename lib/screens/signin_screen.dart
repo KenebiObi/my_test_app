@@ -23,6 +23,7 @@ class _SignInScreenState extends State<SignInScreen> {
       email: _emailController.text.trim(),
       password: _passwordController.text.trim(),
     );
+    print("NIce");
     print(userCredential);
   }
 
@@ -65,7 +66,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   const SizedBox(height: 30.0),
                   // Email textfield
                   Container(
-                    height: 50.0,
+                    // height: 50.0,
                     padding: const EdgeInsets.symmetric(horizontal: 6.0),
                     child: TextFormField(
                       controller: _emailController,
@@ -103,7 +104,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   const SizedBox(height: 15.0),
                   // Password textfeild
                   Container(
-                    height: 50.0,
+                    // height: 50.0,
                     padding: const EdgeInsets.symmetric(horizontal: 6.0),
                     child: TextFormField(
                       controller: _passwordController,
@@ -111,7 +112,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         if (value == null ||
                             value.isEmpty ||
                             value.trim().length < 6) {
-                          return "Please enter a strong password containing more than 6 characters";
+                          return "Please enter a password containing more than 6 characters";
                         }
                         return null;
                       },
@@ -139,7 +140,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 50.0),
+                  const SizedBox(height: 15.0),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 6.0),
                     child: ElevatedButton(
@@ -148,28 +149,11 @@ class _SignInScreenState extends State<SignInScreen> {
                         backgroundColor: Theme.of(context).colorScheme.primary,
                       ),
                       onPressed: () {
-                        setState(
-                          () {
-                            if (_formKey.currentState!.validate()) {
-                              signUp();
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: ((context) => HomePage()),
-                                ),
-                              );
-                            } else {
-                              print("Failed to login");
-
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: ((context) => HomePage()),
-                              //   ),
-                              // );
-                            }
-                          },
-                        );
+                        setState(() {
+                          if (_formKey.currentState!.validate()) {
+                            signUp();
+                          }
+                        });
                       },
                       child: const Text(
                         "Sign Up",
