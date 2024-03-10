@@ -18,13 +18,15 @@ class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   Future signUp() async {
-    UserCredential userCredential =
-        await _firebase.createUserWithEmailAndPassword(
-      email: _emailController.text.trim(),
-      password: _passwordController.text.trim(),
-    );
-    print("NIce");
-    print(userCredential);
+    if (_formKey.currentState!.validate()) {
+      UserCredential userCredential =
+          await _firebase.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      print("NIce");
+      print(userCredential);
+    }
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -148,13 +150,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         minimumSize: const Size(double.infinity, 45.0),
                         backgroundColor: Theme.of(context).colorScheme.primary,
                       ),
-                      onPressed: () {
-                        setState(() {
-                          if (_formKey.currentState!.validate()) {
-                            signUp();
-                          }
-                        });
-                      },
+                      onPressed: signUp,
                       child: const Text(
                         "Sign Up",
                         style: TextStyle(

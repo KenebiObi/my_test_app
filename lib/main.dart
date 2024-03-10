@@ -44,11 +44,8 @@ class _PasswordAppState extends State<PasswordApp> {
             return SplashScreen();
           }
           if (snapshot.hasData) {
-            print(
-                "oOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOHKKK");
             return const HomePage();
           }
-          print("SHIT");
           return MainScreen();
         },
       ),
