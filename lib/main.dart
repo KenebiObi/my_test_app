@@ -39,11 +39,11 @@ class _PasswordAppState extends State<PasswordApp> {
       debugShowCheckedModeBanner: false,
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+        builder: (context, userSnapshot) {
+          if (userSnapshot.connectionState == ConnectionState.waiting) {
             return SplashScreen();
           }
-          if (snapshot.hasData) {
+          if (userSnapshot.hasData) {
             return const HomePage();
           }
           return MainScreen();

@@ -7,7 +7,7 @@ import 'package:my_test_app/screens/login_screen.dart';
 final _firebase = FirebaseAuth.instance;
 
 class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+  SignInScreen({super.key});
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
@@ -16,20 +16,54 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isAuthenticating = false;
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
 
   Future signUp() async {
     if (_formKey.currentState!.validate()) {
-      UserCredential userCredential =
-          await _firebase.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-      print("NIce");
-      print(userCredential);
+      setState(() {
+        _isAuthenticating = true;
+      });
+
+      try {
+        UserCredential userCredential =
+            await _firebase.createUserWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+        print("User created");
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomePage(),
+          ),
+        );
+        print("NIce");
+      } on FirebaseAuthException catch (error) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error.message ?? 'Authentication failed.'),
+          ),
+        );
+      }
+      _emailController.clear();
+      _passwordController.clear();
+      setState(() {
+        _isAuthenticating = false;
+      });
     }
   }
 
   final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,19 +179,24 @@ class _SignInScreenState extends State<SignInScreen> {
                   const SizedBox(height: 15.0),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 45.0),
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                      ),
-                      onPressed: signUp,
-                      child: const Text(
-                        "Sign Up",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                    child: _isAuthenticating
+                        ? CircularProgressIndicator(
+                            color: Theme.of(context).colorScheme.primary,
+                          )
+                        : ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(double.infinity, 45.0),
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
+                            ),
+                            onPressed: signUp,
+                            child: const Text(
+                              "Sign Up",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                   ),
                   const SizedBox(height: 15.0),
                   // Text("NEw"),
