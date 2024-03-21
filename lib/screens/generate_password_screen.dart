@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:my_test_app/widgets/character_option.dart';
 
 class GeneratePasswordScreen extends StatefulWidget {
@@ -21,7 +22,10 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
   String _allCharacters =
       '!@#\$%^&*()_+qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890';
   String _allLowerCaseChars = 'qwertyuiopasdfghjklzxcvbnm';
-  String _password = "password";
+  String _randomPassword = "password";
+
+  // Main password to be saved in firebase
+  String _password = '';
 
   Map<String, String> theMap = {
     'lower': 'qwertyuiopasdfghjklzxcvbnm',
@@ -58,10 +62,10 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
     listOfGeneratedChars.shuffle(Random());
     String shuffledString = listOfGeneratedChars.join('');
     print(shuffledString);
-    _password = shuffledString; // MAIN GENERATED PASSWORD
-    print(_password);
-    if (_password == "") {
-      _password = "password";
+    _randomPassword = shuffledString; // Randomly generated password
+    print(_randomPassword);
+    if (_randomPassword == "") {
+      _randomPassword = "password";
     }
   }
 
@@ -99,7 +103,7 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
                   ),
                   const SizedBox(height: 5.0),
                   Text(
-                    _password,
+                    _randomPassword,
                     style: TextStyle(
                       fontSize: 30.0,
                       color: Theme.of(context).colorScheme.secondary,
@@ -177,7 +181,7 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
                   _addSymbols = !_addSymbols;
                 });
                 print(_addUpperCase);
-                if (_addUpperCase) {
+                if (_addSymbols) {
                   options.add('special');
                 } else {
                   options.remove('special');
@@ -209,7 +213,67 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
                 },
               ),
             ),
-            const SizedBox(height: 50.0),
+            const SizedBox(height: 30.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Clipboard.setData(
+                        ClipboardData(text: _password),
+                      ).then(
+                        (_) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text("Password Copied!"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text("Ok"),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    child: Container(
+                      height: 80.0,
+                      width: 80.0,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(50.0),
+                      ),
+                      child: const Icon(
+                        Icons.content_copy,
+                        size: 30.0,
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      _password = _randomPassword; // MAIN PASSWORD
+                    },
+                    child: Container(
+                      height: 80.0,
+                      width: 80.0,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary,
+                        borderRadius: BorderRadius.circular(50.0),
+                      ),
+                      child: Icon(
+                        Icons.save,
+                        size: 35.0,
+                        color: Colors.grey[300],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),
