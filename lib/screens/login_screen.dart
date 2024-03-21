@@ -19,6 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   bool _isAuthenticating = false;
 
+  // Dispose the textfield data
   @override
   void dispose() {
     // TODO: implement dispose
@@ -27,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController.dispose();
   }
 
+  // Login user, navigate to home page and clear textfield
   Future login() async {
     setState(() {
       _isAuthenticating = true;
@@ -199,7 +201,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                   ),
                   const SizedBox(height: 15.0),
-                  // Text("NEw"),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

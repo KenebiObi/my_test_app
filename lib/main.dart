@@ -4,7 +4,7 @@ import "package:firebase_core/firebase_core.dart";
 import "package:flutter/material.dart";
 import "package:my_test_app/screens/home_page.dart";
 // import 'package:my_test_app/home_page.dart';
-import 'package:my_test_app/screens/main_screen.dart';
+import 'package:my_test_app/screens/auth_screen.dart';
 import "package:my_test_app/screens/signin_screen.dart";
 import "package:my_test_app/screens/splash_screen.dart";
 
@@ -46,7 +46,7 @@ class _PasswordAppState extends State<PasswordApp> {
           if (userSnapshot.hasData) {
             return const HomePage();
           }
-          return MainScreen();
+          return AuthScreen();
         },
       ),
       theme: appTheme,
