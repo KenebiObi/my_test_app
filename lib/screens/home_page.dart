@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:my_test_app/screens/generate_password_screen.dart';
 import 'package:my_test_app/screens/auth_screen.dart';
 import 'package:my_test_app/screens/save_password_screen.dart';
@@ -19,7 +18,12 @@ class _HomePageState extends State<HomePage> {
   void logout() {
     if (_firebase.currentUser != null) {
       FirebaseAuth.instance.signOut();
-      Navigator.pop(context);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const AuthScreen(),
+        ),
+      );
     } else {
       Navigator.pushReplacement(
         context,
@@ -31,15 +35,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   bool onTapBottomNavBarIcon = false;
-  int currentIndex = 0;
+  int currentIndex = 1;
   List<Widget> screens = [
     const GeneratePasswordScreen(),
-    const SavePasswordScreen(),
+    SavePasswordScreen(),
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         leading: Row(
           children: [
             const SizedBox(width: 15.0),
@@ -84,13 +89,13 @@ class _HomePageState extends State<HomePage> {
           gap: 8.0,
           tabs: [
             GButton(
-              icon: !onTapBottomNavBarIcon
+              icon: onTapBottomNavBarIcon
                   ? Icons.settings_suggest_rounded
                   : Icons.settings_suggest_outlined,
               text: "Generate",
             ),
             GButton(
-              icon: !onTapBottomNavBarIcon
+              icon: onTapBottomNavBarIcon
                   ? Icons.favorite_border_rounded
                   : Icons.favorite_rounded,
               text: "Save",

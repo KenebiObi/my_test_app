@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CharacterOptionWidget extends StatefulWidget {
-  CharacterOptionWidget({
+  const CharacterOptionWidget({
     required this.color,
     required this.icon,
     required this.chracterSelection,
@@ -9,9 +9,9 @@ class CharacterOptionWidget extends StatefulWidget {
     super.key,
   });
 
-  Color color;
+  final Color color;
   final IconData icon;
-  String chracterSelection;
+  final String chracterSelection;
   final void Function() onTap;
 
   @override

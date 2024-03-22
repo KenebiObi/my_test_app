@@ -1,9 +1,12 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:my_test_app/modules/user_password.dart';
+import 'package:my_test_app/screens/save_password_screen.dart';
 import 'package:my_test_app/widgets/character_option.dart';
+import 'package:my_test_app/widgets/copy_password_button.dart';
+import 'package:my_test_app/widgets/save_password_button.dart';
 
 class GeneratePasswordScreen extends StatefulWidget {
   const GeneratePasswordScreen();
@@ -53,8 +56,9 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
       }
     } else {
       for (int i = 0; i < mainSliderValue; i++) {
-        generatedCharacters +=
-            _allLowerCaseChars[Random().nextInt(_allLowerCaseChars.length)];
+        generatedCharacters += _allLowerCaseChars[Random().nextInt(
+          _allLowerCaseChars.length,
+        )];
       }
     }
     List listOfGeneratedChars = generatedCharacters.split('');
@@ -68,6 +72,20 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
       _randomPassword = "password";
     }
   }
+
+  final TextEditingController _accountController = TextEditingController();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _accountController.dispose();
+  }
+
+  // void addGeneratedPassword(
+  //     String account, String password, List<UserPassword> userPasswords) {
+  //   userPasswords.add(UserPassword(account: account, password: password));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -219,58 +237,21 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      Clipboard.setData(
-                        ClipboardData(text: _password),
-                      ).then(
-                        (_) {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text("Password Copied!"),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: const Text("Ok"),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    child: Container(
-                      height: 80.0,
-                      width: 80.0,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(50.0),
-                      ),
-                      child: const Icon(
-                        Icons.content_copy,
-                        size: 30.0,
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
+                  CopyPasswordButton(clipBoardText: _randomPassword),
+                  SavePasswordButton(
                     onTap: () {
                       _password = _randomPassword; // MAIN PASSWORD
+                      // showDialog(
+                      //   context: context,
+                      //   builder: (context) => AlertDialog(
+                      //     title: const Text("Save PAssword"),
+                      //     content: TextField(
+                      //       controller: _accountController,
+                      //     ),
+                      //   ),
+                      // );
                     },
-                    child: Container(
-                      height: 80.0,
-                      width: 80.0,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
-                        borderRadius: BorderRadius.circular(50.0),
-                      ),
-                      child: Icon(
-                        Icons.save,
-                        size: 35.0,
-                        color: Colors.grey[300],
-                      ),
-                    ),
-                  ),
+                  )
                 ],
               ),
             )
