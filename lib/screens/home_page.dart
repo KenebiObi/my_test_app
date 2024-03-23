@@ -82,6 +82,7 @@ class _HomePageState extends State<HomePage> {
             print(currentIndex);
             print(screens[currentIndex]);
           },
+          backgroundColor: Colors.transparent,
           tabBackgroundColor: Theme.of(context).colorScheme.primary,
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
           activeColor: Colors.white,

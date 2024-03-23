@@ -7,6 +7,7 @@ import 'package:my_test_app/screens/save_password_screen.dart';
 import 'package:my_test_app/widgets/character_option.dart';
 import 'package:my_test_app/widgets/copy_password_button.dart';
 import 'package:my_test_app/widgets/save_password_button.dart';
+import 'package:my_test_app/widgets/gen_pass_alert_dialog.dart';
 
 class GeneratePasswordScreen extends StatefulWidget {
   const GeneratePasswordScreen();
@@ -74,18 +75,12 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
   }
 
   final TextEditingController _accountController = TextEditingController();
-
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     _accountController.dispose();
   }
-
-  // void addGeneratedPassword(
-  //     String account, String password, List<UserPassword> userPasswords) {
-  //   userPasswords.add(UserPassword(account: account, password: password));
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +131,7 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
               color: _addLowerCase
                   ? Theme.of(context).primaryColorLight
                   : Colors.white,
-              chracterSelection: "Add lower case charcters",
+              chracterSelection: "Add lower case characters",
               onTap: () {
                 setState(() {
                   _addLowerCase = !_addLowerCase;
@@ -155,7 +150,7 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
               color: _addUpperCase
                   ? Theme.of(context).primaryColorLight
                   : Colors.white,
-              chracterSelection: "Add upper case charcters",
+              chracterSelection: "Add upper case characters",
               onTap: () {
                 setState(() {
                   _addUpperCase = !_addUpperCase;
@@ -193,7 +188,7 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
               color: _addSymbols
                   ? Theme.of(context).primaryColorLight
                   : Colors.white,
-              chracterSelection: "Add special charcters",
+              chracterSelection: "Add special characters",
               onTap: () {
                 setState(() {
                   _addSymbols = !_addSymbols;
@@ -241,15 +236,13 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
                   SavePasswordButton(
                     onTap: () {
                       _password = _randomPassword; // MAIN PASSWORD
-                      // showDialog(
-                      //   context: context,
-                      //   builder: (context) => AlertDialog(
-                      //     title: const Text("Save PAssword"),
-                      //     content: TextField(
-                      //       controller: _accountController,
-                      //     ),
-                      //   ),
-                      // );
+                      showDialog(
+                        context: context,
+                        builder: (context) => GenPassAlertDialogWidget(
+                          controller: _accountController,
+                          passwordText: _password,
+                        ),
+                      );
                     },
                   )
                 ],

@@ -6,3 +6,5 @@ class UserPassword {
   final String account;
   final String password;
 }
+
+List<UserPassword> savedPasswords = [];
