@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_test_app/modules/user_password.dart';
 
-class SavePassBottomSheetWidget extends StatefulWidget {
+class SavePassBottomSheetWidget extends StatelessWidget {
   const SavePassBottomSheetWidget({
     required this.accountController,
     required this.passwordController,
@@ -11,12 +11,6 @@ class SavePassBottomSheetWidget extends StatefulWidget {
   final TextEditingController accountController;
   final TextEditingController passwordController;
 
-  @override
-  State<SavePassBottomSheetWidget> createState() =>
-      _SavePassBottomSheetWidgetState();
-}
-
-class _SavePassBottomSheetWidgetState extends State<SavePassBottomSheetWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -53,7 +47,7 @@ class _SavePassBottomSheetWidgetState extends State<SavePassBottomSheetWidget> {
                 borderRadius: BorderRadius.circular(20.0),
               ),
             ),
-            controller: widget.accountController,
+            controller: accountController,
           ),
           const SizedBox(height: 15.0),
           TextField(
@@ -77,13 +71,13 @@ class _SavePassBottomSheetWidgetState extends State<SavePassBottomSheetWidget> {
                 borderRadius: BorderRadius.circular(20.0),
               ),
             ),
-            controller: widget.passwordController,
+            controller: passwordController,
           ),
           const SizedBox(height: 8.0),
-          widget.passwordController.text.trim().isEmpty
-              ? SizedBox()
+          passwordController.text.trim().isEmpty
+              ? const SizedBox()
               : Text(
-                  widget.passwordController.text.trim(),
+                  passwordController.text.trim(),
                   style: TextStyle(
                     fontSize: 18.0,
                     color: Theme.of(context).colorScheme.primary,
@@ -108,25 +102,21 @@ class _SavePassBottomSheetWidgetState extends State<SavePassBottomSheetWidget> {
                   ),
                 ),
                 onPressed: () {
-                  setState(() {
-                    if (widget.accountController.text.trim().isNotEmpty &&
-                        widget.passwordController.text.trim().isNotEmpty) {
-                      savedPasswords.add(
-                        UserPassword(
-                          account: widget.accountController.text.trim(),
-                          password: widget.passwordController.text.trim(),
-                        ),
-                      );
-                      print(
-                          "Account : ${widget.accountController.text.trim()}");
-                      print(
-                          "Password: ${widget.passwordController.text.trim()}");
-                    } else
-                      return;
-                    Navigator.pop(context);
-                    widget.accountController.clear();
-                    widget.passwordController.clear();
-                  });
+                  if (accountController.text.trim().isNotEmpty &&
+                      passwordController.text.trim().isNotEmpty) {
+                    savedPasswords.add(
+                      UserPassword(
+                        account: accountController.text.trim(),
+                        password: passwordController.text.trim(),
+                      ),
+                    );
+                    print("Account : ${accountController.text.trim()}");
+                    print("Password: ${passwordController.text.trim()}");
+                  } else
+                    return;
+                  Navigator.pop(context);
+                  accountController.clear();
+                  passwordController.clear();
                 },
                 child: const Text(
                   "Save",

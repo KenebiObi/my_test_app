@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_test_app/modules/user_password.dart';
-import 'package:my_test_app/widgets/gen_pass_alert_dialog.dart';
+import 'package:my_test_app/widgets/add_pass_acco_dialog.dart';
 import 'package:my_test_app/widgets/save_pass_bottom_sheet.dart';
 import 'package:my_test_app/widgets/saved_password_tile.dart';
 
@@ -14,6 +14,33 @@ class SavePasswordScreen extends StatefulWidget {
 class _SavePasswordScreenState extends State<SavePasswordScreen> {
   final TextEditingController _accountController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  final TextEditingController _editAccountController = TextEditingController();
+  final TextEditingController _editPasswordController = TextEditingController();
+
+  void deletePassword(int index) {
+    if (index >= 0 && index < savedPasswords.length) {
+      savedPasswords.removeAt(index);
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 4),
+          content: const Text(
+            "Expenses deleted",
+          ),
+          action: SnackBarAction(
+            label: "Undo",
+            onPressed: () {
+              setState(() {
+                savedPasswords.insert(index, savedPasswords[index]);
+              });
+            },
+          ),
+          dismissDirection: DismissDirection.horizontal,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +57,7 @@ class _SavePasswordScreenState extends State<SavePasswordScreen> {
               const Text(
                 "Saved Passwords",
                 style: TextStyle(
-                  fontSize: 27.0,
+                  fontSize: 23.0,
                 ),
               ),
               ElevatedButton.icon(
@@ -43,7 +70,9 @@ class _SavePasswordScreenState extends State<SavePasswordScreen> {
                       accountController: _accountController,
                       passwordController: _passwordController,
                     ),
-                  );
+                  ).then((_) {
+                    setState(() {});
+                  });
                 },
                 icon: const Icon(Icons.add),
                 label: const Text("Add Password"),
@@ -64,9 +93,34 @@ class _SavePasswordScreenState extends State<SavePasswordScreen> {
                     shrinkWrap: true,
                     itemCount: savedPasswords.length,
                     itemBuilder: (ctx, index) {
-                      return SavedPasswordTileWidget(
-                        savedPasswords[index].account,
-                        savedPasswords[index].password,
+                      return Dismissible(
+                        key: ValueKey(savedPasswords[index]),
+                        onDismissed: (direction) {
+                          deletePassword(index);
+                        },
+                        child: SavedPasswordTileWidget(
+                          () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AddPasswordAccountDialog(
+                                altFunction: () {
+                                  setState(() {
+                                    savedPasswords[index].account =
+                                        _editAccountController.text.trim();
+                                    savedPasswords[index].password =
+                                        _editPasswordController.text.trim();
+                                  });
+                                },
+                                controller: _editAccountController,
+                                passwordText:
+                                    _editPasswordController.text.trim(),
+                                isNotPassGenScreen: true,
+                              ),
+                            );
+                          },
+                          savedPasswords[index].account,
+                          "*" * savedPasswords[index].password.length,
+                        ),
                       );
                     },
                   ),

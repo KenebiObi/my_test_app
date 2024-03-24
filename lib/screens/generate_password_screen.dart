@@ -7,7 +7,7 @@ import 'package:my_test_app/screens/save_password_screen.dart';
 import 'package:my_test_app/widgets/character_option.dart';
 import 'package:my_test_app/widgets/copy_password_button.dart';
 import 'package:my_test_app/widgets/save_password_button.dart';
-import 'package:my_test_app/widgets/gen_pass_alert_dialog.dart';
+import 'package:my_test_app/widgets/add_pass_acco_dialog.dart';
 
 class GeneratePasswordScreen extends StatefulWidget {
   const GeneratePasswordScreen();
@@ -238,7 +238,9 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
                       _password = _randomPassword; // MAIN PASSWORD
                       showDialog(
                         context: context,
-                        builder: (context) => GenPassAlertDialogWidget(
+                        builder: (context) => AddPasswordAccountDialog(
+                          altFunction: () {},
+                          isNotPassGenScreen: false,
                           controller: _accountController,
                           passwordText: _password,
                         ),

@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   bool onTapBottomNavBarIcon = false;
-  int currentIndex = 1;
+  int currentIndex = 0;
   List<Widget> screens = [
     const GeneratePasswordScreen(),
     SavePasswordScreen(),
