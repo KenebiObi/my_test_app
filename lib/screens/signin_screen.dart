@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:my_test_app/modules/user_password.dart';
 import 'package:my_test_app/screens/home_page.dart';
 import 'package:my_test_app/screens/login_screen.dart';
 
@@ -59,6 +60,7 @@ class _SignInScreenState extends State<SignInScreen> {
       setState(() {
         _isAuthenticating = false;
       });
+      saveUserPasswords(FirebaseAuth.instance.currentUser!.uid, savedPasswords);
     }
   }
 

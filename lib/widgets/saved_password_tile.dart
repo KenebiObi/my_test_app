@@ -32,7 +32,7 @@ class SavedPasswordTileWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
-                width: 150.0,
+                width: 250.0,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

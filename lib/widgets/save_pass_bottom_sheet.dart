@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_test_app/modules/user_password.dart';
 
@@ -101,14 +102,17 @@ class SavePassBottomSheetWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   if (accountController.text.trim().isNotEmpty &&
                       passwordController.text.trim().isNotEmpty) {
-                    savedPasswords.add(
-                      UserPassword(
-                        account: accountController.text.trim(),
-                        password: passwordController.text.trim(),
-                      ),
+                    await FirebaseFirestore.instance
+                        .collection('passwords')
+                        .add(
+                      {
+                        'account': accountController.text.trim(),
+                        'password': passwordController.text.trim(),
+                        'createdAt': Timestamp.now(),
+                      },
                     );
                     print("Account : ${accountController.text.trim()}");
                     print("Password: ${passwordController.text.trim()}");

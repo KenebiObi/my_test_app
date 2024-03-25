@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_test_app/modules/user_password.dart';
 
@@ -10,6 +12,7 @@ class GenScreenAddPassDialog extends StatelessWidget {
 
   TextEditingController controller = TextEditingController();
   TextEditingController password = TextEditingController();
+  // final firebaseUserId = FirebaseAuth.instance.currentUser!.uid;
 
   final String passwordText;
   @override
@@ -69,12 +72,15 @@ class GenScreenAddPassDialog extends StatelessWidget {
               ),
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (controller.text.trim().isNotEmpty) {
-                  savedPasswords.add(UserPassword(
-                    account: controller.text.trim(),
-                    password: passwordText,
-                  ));
+                  await FirebaseFirestore.instance.collection('passwords').add(
+                    {
+                      'account': controller.text.trim(),
+                      'password': password.text.trim(),
+                      'createdAt': Timestamp.now(),
+                    },
+                  );
                   print("Account : ${controller.text.trim()}");
                   print("Password: $passwordText");
                 } else
