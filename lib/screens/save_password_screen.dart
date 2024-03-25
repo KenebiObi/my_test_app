@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_test_app/modules/user_password.dart';
-import 'package:my_test_app/widgets/add_pass_acco_dialog.dart';
+import 'package:my_test_app/widgets/gen_screen_add_pass_dialog.dart';
 import 'package:my_test_app/widgets/save_pass_bottom_sheet.dart';
+import 'package:my_test_app/widgets/save_screen_add_pass_dialog.dart';
 import 'package:my_test_app/widgets/saved_password_tile.dart';
 
 class SavePasswordScreen extends StatefulWidget {
@@ -99,27 +100,29 @@ class _SavePasswordScreenState extends State<SavePasswordScreen> {
                           deletePassword(index);
                         },
                         child: SavedPasswordTileWidget(
-                          () {
+                          altFunction: () {
+                            print(savedPasswords[index].password.length);
                             showDialog(
                               context: context,
-                              builder: (context) => AddPasswordAccountDialog(
-                                altFunction: () {
-                                  setState(() {
+                              builder: (context) => SaveScreenAddPassDialog(
+                                controller: _editAccountController,
+                                password: _editPasswordController,
+                                executable: () => setState(
+                                  () {
                                     savedPasswords[index].account =
                                         _editAccountController.text.trim();
                                     savedPasswords[index].password =
-                                        _editPasswordController.text.trim();
-                                  });
-                                },
-                                controller: _editAccountController,
-                                passwordText:
-                                    _editPasswordController.text.trim(),
-                                isNotPassGenScreen: true,
+                                        _editPasswordController.text;
+                                    print(_editPasswordController.text);
+                                  },
+                                ),
                               ),
                             );
                           },
-                          savedPasswords[index].account,
-                          "*" * savedPasswords[index].password.length,
+                          account: savedPasswords[index].account,
+                          password:
+                              "*" * (savedPasswords[index].password.length),
+                          passwordForCopy: savedPasswords[index].password,
                         ),
                       );
                     },

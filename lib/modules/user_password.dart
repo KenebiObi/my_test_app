@@ -7,14 +7,4 @@ class UserPassword {
   String password;
 }
 
-List<UserPassword> savedPasswords = [
-  UserPassword(account: "GOOGLE", password: "1234567890"),
-  UserPassword(account: "GOOGLE", password: "1234567890"),
-  UserPassword(account: "GOOGLE", password: "1234567890"),
-  UserPassword(account: "GOOGLE", password: "1234567890"),
-  UserPassword(account: "GOOGLE", password: "1234567890"),
-  UserPassword(account: "GOOGLE", password: "1234567890"),
-  UserPassword(account: "GOOGLE", password: "1234567890"),
-  UserPassword(account: "GOOGLE", password: "1234567890"),
-  UserPassword(account: "GOOGLE", password: "1234567890"),
-];
+List<UserPassword> savedPasswords = [];

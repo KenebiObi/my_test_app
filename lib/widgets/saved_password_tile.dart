@@ -1,18 +1,20 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:my_test_app/widgets/add_pass_acco_dialog.dart';
 
 class SavedPasswordTileWidget extends StatelessWidget {
-  SavedPasswordTileWidget(this.altFunction, this.account, this.password,
-      {super.key});
+  SavedPasswordTileWidget(
+      {required this.altFunction,
+      required this.account,
+      required this.password,
+      required this.passwordForCopy,
+      super.key});
 
   final void Function() altFunction;
   final String account;
   final String password;
   final TextEditingController accountController = TextEditingController();
-
   final TextEditingController passwordController = TextEditingController();
+  final String passwordForCopy;
 
   @override
   Widget build(BuildContext context) {
@@ -29,25 +31,30 @@ class SavedPasswordTileWidget extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    account,
-                    style: const TextStyle(
-                      fontSize: 20.0,
+              SizedBox(
+                width: 150.0,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      account,
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                      ),
                     ),
-                  ),
-                  const Spacer(),
-                  Text(
-                    password,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.tertiary,
+                    const Spacer(),
+                    Text(
+                      password,
+                      softWrap: true,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.tertiary,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-              // const Spacer(),
               Row(
                 children: [
                   IconButton(
@@ -56,7 +63,8 @@ class SavedPasswordTileWidget extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: () {
-                      Clipboard.setData(ClipboardData(text: password)).then(
+                      Clipboard.setData(ClipboardData(text: passwordForCopy))
+                          .then(
                         (_) {
                           showDialog(
                             context: context,
