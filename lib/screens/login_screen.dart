@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:my_test_app/modules/user_password.dart';
 import 'package:my_test_app/screens/home_page.dart';
 import 'package:my_test_app/screens/login_screen.dart';
 import 'package:my_test_app/screens/signin_screen.dart';
@@ -59,14 +58,12 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         );
       }
-      _emailController.clear();
-      _passwordController.clear();
-      setState(() {
-        _isAuthenticating = false;
-        saveUserPasswords(
-            FirebaseAuth.instance.currentUser!.uid, savedPasswords);
-      });
     }
+    _emailController.clear();
+    _passwordController.clear();
+    setState(() {
+      _isAuthenticating = false;
+    });
   }
 
   @override
