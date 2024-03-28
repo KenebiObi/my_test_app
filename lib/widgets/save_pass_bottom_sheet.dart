@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:my_test_app/modules/database_service.dart';
+import 'package:my_test_app/modules/user_details.dart';
 import 'package:my_test_app/modules/user_password.dart';
 
-class SavePassBottomSheetWidget extends StatelessWidget {
+class SavePassBottomSheetWidget extends StatefulWidget {
   const SavePassBottomSheetWidget({
     required this.accountController,
     required this.passwordController,
@@ -10,6 +12,14 @@ class SavePassBottomSheetWidget extends StatelessWidget {
 
   final TextEditingController accountController;
   final TextEditingController passwordController;
+
+  @override
+  State<SavePassBottomSheetWidget> createState() =>
+      _SavePassBottomSheetWidgetState();
+}
+
+class _SavePassBottomSheetWidgetState extends State<SavePassBottomSheetWidget> {
+  final DataBaseServices _databaseServices = DataBaseServices();
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +57,7 @@ class SavePassBottomSheetWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20.0),
               ),
             ),
-            controller: accountController,
+            controller: widget.accountController,
           ),
           const SizedBox(height: 15.0),
           TextField(
@@ -71,7 +81,7 @@ class SavePassBottomSheetWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20.0),
               ),
             ),
-            controller: passwordController,
+            controller: widget.passwordController,
           ),
           const SizedBox(height: 15.0),
           Row(
@@ -92,19 +102,35 @@ class SavePassBottomSheetWidget extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  if (accountController.text.trim().isNotEmpty &&
-                      passwordController.text.trim().isNotEmpty) {
-                    savedUserPasswordDetails.add({
-                      'account': accountController.text.trim(),
-                      'password': passwordController.text.trim(),
+                  if (widget.accountController.text.trim().isNotEmpty &&
+                      widget.passwordController.text.trim().isNotEmpty) {
+                    setState(() {
+                      UserDetails userdetail = UserDetails(
+                        account: widget.accountController.text.trim(),
+                        password: widget.passwordController.text.trim(),
+                      );
+                      _databaseServices.addUserDetails(userdetail);
                     });
-                    print("Account : ${accountController.text.trim()}");
-                    print("Password: ${passwordController.text.trim()}");
+
+                    // setState(() {
+                    //   saveToUser({
+                    //     'account': widget.accountController.text.trim(),
+                    //     'password': widget.passwordController.text.trim(),
+                    //   });
+                    // });
+
+                    // savedUserPasswordDetails.add({
+                    //   'account': widget.accountController.text.trim(),
+                    //   'password': widget.passwordController.text.trim(),
+                    // });
+
+                    print("Account : ${widget.accountController.text.trim()}");
+                    print("Password: ${widget.passwordController.text.trim()}");
                   } else
                     return;
                   Navigator.pop(context);
-                  accountController.clear();
-                  passwordController.clear();
+                  widget.accountController.clear();
+                  widget.passwordController.clear();
                 },
                 child: const Text(
                   "Save",

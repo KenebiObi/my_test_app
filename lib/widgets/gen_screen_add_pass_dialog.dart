@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:my_test_app/modules/database_service.dart';
+import 'package:my_test_app/modules/user_details.dart';
 import 'package:my_test_app/modules/user_password.dart';
 
-class GenScreenAddPassDialog extends StatelessWidget {
+class GenScreenAddPassDialog extends StatefulWidget {
   GenScreenAddPassDialog({
     required this.controller,
     required this.passwordText,
@@ -9,9 +11,16 @@ class GenScreenAddPassDialog extends StatelessWidget {
   });
 
   TextEditingController controller = TextEditingController();
-  TextEditingController password = TextEditingController();
-
   final String passwordText;
+
+  @override
+  State<GenScreenAddPassDialog> createState() => _GenScreenAddPassDialogState();
+}
+
+class _GenScreenAddPassDialogState extends State<GenScreenAddPassDialog> {
+  TextEditingController password = TextEditingController();
+  final DataBaseServices _databaseServices = DataBaseServices();
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -41,14 +50,14 @@ class GenScreenAddPassDialog extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20.0),
               ),
             ),
-            controller: controller,
+            controller: widget.controller,
           ),
           const SizedBox(height: 15.0),
 
-          passwordText.isEmpty
+          widget.passwordText.isEmpty
               ? const SizedBox()
               : Text(
-                  passwordText,
+                  widget.passwordText,
                   style: TextStyle(
                     fontSize: 20.0,
                     color: Theme.of(context).colorScheme.primary,
@@ -70,13 +79,16 @@ class GenScreenAddPassDialog extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                if (controller.text.trim().isNotEmpty) {
-                  savedUserPasswordDetails.add({
-                    'account': controller.text.trim(),
-                    'password': passwordText,
+                if (widget.controller.text.trim().isNotEmpty) {
+                  setState(() {
+                    UserDetails userdetail = UserDetails(
+                      account: widget.controller.text.trim(),
+                      password: widget.passwordText.trim(),
+                    );
+                    _databaseServices.addUserDetails(userdetail);
                   });
-                  print("Account : ${controller.text.trim()}");
-                  print("Password: $passwordText");
+                  print("Account : ${widget.controller.text.trim()}");
+                  print("Password: ${widget.passwordText}");
                 } else
                   return;
 

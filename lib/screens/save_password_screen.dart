@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:my_test_app/modules/database_service.dart';
+import 'package:my_test_app/modules/user_details.dart';
 import 'package:my_test_app/modules/user_password.dart';
-import 'package:my_test_app/widgets/gen_screen_add_pass_dialog.dart';
 import 'package:my_test_app/widgets/save_pass_bottom_sheet.dart';
 import 'package:my_test_app/widgets/save_screen_add_pass_dialog.dart';
 import 'package:my_test_app/widgets/saved_password_tile.dart';
 
 class SavePasswordScreen extends StatefulWidget {
-  SavePasswordScreen([saveDetails]);
+  SavePasswordScreen({required saveDetails});
 
   @override
   State<SavePasswordScreen> createState() => _SavePasswordScreenState();
@@ -19,35 +20,60 @@ class _SavePasswordScreenState extends State<SavePasswordScreen> {
   final TextEditingController _editAccountController = TextEditingController();
   final TextEditingController _editPasswordController = TextEditingController();
 
-  void deletePassword(int index) {
-    if (index >= 0 && index <= savedUserPasswordDetails.length) {
-      Map<String, dynamic> removedItem = savedUserPasswordDetails[index];
-      savedUserPasswordDetails.removeAt(index);
-      print(savedUserPasswordDetails.length);
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          duration: const Duration(seconds: 4),
-          content: const Text(
-            "Expenses deleted",
-          ),
-          action: SnackBarAction(
-            label: "Undo",
-            onPressed: () {
-              setState(() {
-                savedUserPasswordDetails.insert(index, removedItem);
-              });
-            },
-          ),
-          dismissDirection: DismissDirection.horizontal,
-        ),
-      );
+  final DataBaseServices _databaseServices = DataBaseServices();
+
+  bool isVisible = false;
+
+  @override
+  void dispose() {
+    _accountController.dispose();
+    _passwordController.dispose();
+    _editAccountController.dispose();
+    _editPasswordController.dispose();
+    super.dispose();
+  }
+
+  void restoreDeletedUserDetails(
+    List userDetails,
+    String userdetailId,
+    UserDetails userdetail,
+    int index,
+  ) {
+    if (index >= 0 && index < userDetails.length) {
+      print("Deleted");
+      setState(() {
+        try {
+          // Show a SnackBar to notify the user and provide an option to undo the deletion
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              duration: const Duration(seconds: 4),
+              content: const Text("Password deleted"),
+              action: SnackBarAction(
+                label: "Undo",
+                onPressed: () async {
+                  // Add the deleted password back to Firestore
+                  _databaseServices.addUserDetails(userdetail);
+                },
+              ),
+              dismissDirection: DismissDirection.horizontal,
+            ),
+          );
+        } catch (error) {
+          // Handle error
+          print("Error deleting password: $error");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Failed to delete password: $error"),
+            ),
+          );
+        }
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final deviceHeight = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
@@ -83,55 +109,105 @@ class _SavePasswordScreenState extends State<SavePasswordScreen> {
             ],
           ),
           const SizedBox(height: 20.0),
+          // This is the part the that contains all ive been following from the video
           SizedBox(
-            height: deviceHeight - 275,
-            child: savedUserPasswordDetails.isEmpty
-                ? const Center(
-                    child: Text(
-                      "No Saved Passwords Yet",
-                      style: TextStyle(fontSize: 20.0),
-                    ),
-                  )
-                : ListView.builder(
+            height: MediaQuery.of(context).size.height * 0.80,
+            width: double.infinity,
+            child: StreamBuilder(
+              stream: _databaseServices.getUsserDetails(),
+              builder: (ctx, snapshot) {
+                List userDetails = snapshot.data?.docs ?? [];
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError) {
+                  return const Center(
+                    child: Text("Error fetching data"),
+                  );
+                } else if (!snapshot.hasData || snapshot.data == null) {
+                  return const Center(
+                    child: Text("Nothing here"),
+                  );
+                } else {
+                  // List userdetails = snapshot.data?.docs ?? [];
+                  print(userDetails);
+                  if (userDetails.isEmpty) {
+                    return const Center(
+                      child: Text("Nothing here"),
+                    );
+                  }
+                  return ListView.builder(
                     shrinkWrap: true,
-                    itemCount: savedUserPasswordDetails.length,
+                    itemCount: userDetails.length,
                     itemBuilder: (ctx, index) {
-                      return Dismissible(
-                        key: ValueKey(savedUserPasswordDetails[index]),
-                        onDismissed: (direction) {
-                          deletePassword(index);
-                        },
-                        child: SavedPasswordTileWidget(
-                          altFunction: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => SaveScreenAddPassDialog(
-                                controller: _editAccountController,
-                                password: _editPasswordController,
-                                executable: () => setState(
-                                  () {
-                                    savedUserPasswordDetails[index]['account'] =
-                                        _editAccountController.text.trim();
-                                    savedUserPasswordDetails[index]
-                                            ['password'] =
-                                        _editPasswordController.text.trim();
-                                  },
-                                ),
-                              ),
-                            );
-                          },
-                          account: savedUserPasswordDetails[index]['account'],
-                          password: "*" *
-                              (savedUserPasswordDetails[index]['password']
-                                  .toString()
-                                  .length),
-                          passwordForCopy: savedUserPasswordDetails[index]
-                              ['password'],
-                        ),
+                      UserDetails userdetail = userDetails[index].data();
+                      String userdetailId = userDetails[index].id;
+                      print(userdetail.password);
+                      return Column(
+                        children: [
+                          Dismissible(
+                            // background: Container(
+                            //   color: Theme.of(context)
+                            //       .colorScheme
+                            //       .error, // Specify the desired background color
+                            //   alignment: Alignment.centerRight,
+                            //   padding: EdgeInsets.symmetric(horizontal: 20),
+                            //   child: Icon(Icons.delete, color: Colors.white),
+                            // ),
+                            key: ValueKey(userDetails[index]),
+                            onDismissed: (direction) {
+                              setState(() {
+                                _databaseServices
+                                    .deleteUserDetails(userdetailId);
+                                restoreDeletedUserDetails(
+                                  userDetails,
+                                  userdetailId,
+                                  userdetail,
+                                  index,
+                                );
+                              });
+                            },
+                            child: SavedPasswordTileWidget(
+                              altFunction: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => SaveScreenAddPassDialog(
+                                    controller: _editAccountController,
+                                    password: _editPasswordController,
+                                    executable: () {
+                                      setState(() {
+                                        UserDetails updatedUserDetails =
+                                            userdetail.copyWith(
+                                          account: _editAccountController.text
+                                              .trim(),
+                                          password: _editPasswordController.text
+                                              .trim(),
+                                        );
+                                        _databaseServices.updateUserDetails(
+                                          userdetailId,
+                                          updatedUserDetails,
+                                        );
+                                      });
+                                    },
+                                  ),
+                                );
+                              },
+                              userdetail: userdetail,
+                              passwordForCopy: userdetail.password,
+                              index: 1,
+                            ),
+                          ),
+                          const SizedBox(height: 15.0),
+                        ],
                       );
                     },
-                  ),
-          )
+                  );
+                  ;
+                }
+              },
+            ),
+          ),
         ],
       ),
     );

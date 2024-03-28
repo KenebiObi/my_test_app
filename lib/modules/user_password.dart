@@ -1,23 +1,6 @@
-// class UserPassword {
-//   UserPassword({
-//     required this.account,
-//     required this.password,
-//   });
-//   String account;
-//   String password;
-// }
-
-// List<UserPassword> savedPasswords = [
-//   UserPassword(account: "GOOGLE", password: "1234567890"),
-//   UserPassword(account: "GOOGLE", password: "123456890"),
-//   UserPassword(account: "GOOGLE", password: "1234567890"),
-//   UserPassword(account: "GOOGLE", password: "1234567890"),
-//   UserPassword(account: "GOOGLE", password: "1234567890"),
-//   UserPassword(account: "GOOGLE", password: "1234567890"),
-//   UserPassword(account: "GOOGLE", password: "1234567890"),
-//   UserPassword(account: "GOOGLE", password: "1234567890"),
-//   UserPassword(account: "GOOGLE", password: "1234567890"),
-// ];
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:uuid/uuid.dart';
 
 List<Map<String, dynamic>> savedUserPasswordDetails = [
   ({
@@ -45,3 +28,27 @@ List<Map<String, dynamic>> savedUserPasswordDetails = [
     'password': 'zjvaf',
   }),
 ];
+
+final db = FirebaseFirestore.instance;
+final uuid = Uuid().v1;
+
+// void saveUserDetails(Map<String, dynamic> userDetails) {
+//   db
+//       .collection("userdetails")
+//       .doc(FirebaseAuth.instance.currentUser!.uid)
+//       .collection('details')
+//       .set(userDetails);
+// }
+
+void saveToUser(Map<String, dynamic> userDetails) {
+  db
+      .collection('userdetails')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('details')
+      .add(userDetails)
+      .then((value) {
+    print("User details added successfully");
+  }).catchError((error) {
+    print("Failed to add user details: $error");
+  });
+}

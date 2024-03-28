@@ -35,10 +35,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   bool onTapBottomNavBarIcon = false;
-  int currentIndex = 0;
+  int currentIndex = 1;
   List<Widget> screens = [
     const GeneratePasswordScreen(),
-    SavePasswordScreen(),
+    SavePasswordScreen(
+      saveDetails: null,
+    ),
   ];
   @override
   Widget build(BuildContext context) {
