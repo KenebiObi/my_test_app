@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_test_app/modules/user_details.dart';
 
 const String USER_DEATILS_COLLECTION_REF = "userdetails";
@@ -11,6 +12,8 @@ class DataBaseServices {
   DataBaseServices() {
     _userdetailsRef = firebase
         .collection(USER_DEATILS_COLLECTION_REF)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection("user_data")
         .withConverter<UserDetails>(
             fromFirestore: (snapshots, _) => UserDetails.fromJson(
                   snapshots.data()!,

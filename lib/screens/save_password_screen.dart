@@ -111,7 +111,7 @@ class _SavePasswordScreenState extends State<SavePasswordScreen> {
           const SizedBox(height: 20.0),
           // This is the part the that contains all ive been following from the video
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.80,
+            height: MediaQuery.of(context).size.height * 0.70,
             width: double.infinity,
             child: StreamBuilder(
               stream: _databaseServices.getUsserDetails(),

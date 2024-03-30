@@ -51,29 +51,37 @@ class _SavedPasswordTileWidgetState extends State<SavedPasswordTileWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
-              width: 150.0,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        widget.userdetail.account,
-                        style: const TextStyle(
-                          fontSize: 18.0,
+                      Container(
+                        width: 100,
+                        child: Text(
+                          softWrap: true,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          widget.userdetail.account,
+                          style: const TextStyle(
+                            fontSize: 18.0,
+                          ),
                         ),
                       ),
                       // const Spacer(),
-                      Text(
-                        _isVisible
-                            ? widget.userdetail.password
-                            : '*' * widget.userdetail.password.length,
-                        softWrap: true,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.tertiary,
+                      Container(
+                        width: 100,
+                        child: Text(
+                          _isVisible
+                              ? widget.userdetail.password
+                              : '*' * widget.userdetail.password.length,
+                          softWrap: true,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.tertiary,
+                          ),
                         ),
                       ),
                     ],
