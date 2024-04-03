@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class OTPNumberTextField extends StatefulWidget {
   OTPNumberTextField({
@@ -21,6 +22,7 @@ class _OTPNumberTextFieldState extends State<OTPNumberTextField> {
       children: [
         SizedBox(
           width: 100.0,
+          height: 85.0,
           child: TextFormField(
             controller: widget.otpCountryCodeController,
             validator: (value) {
@@ -37,6 +39,7 @@ class _OTPNumberTextFieldState extends State<OTPNumberTextField> {
             textInputAction: TextInputAction.next,
             maxLength: 3,
             keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             decoration: InputDecoration(
               counterText: "",
               prefixIcon: const Icon(
@@ -70,44 +73,49 @@ class _OTPNumberTextFieldState extends State<OTPNumberTextField> {
         ),
         const SizedBox(width: 5.0),
         Expanded(
-          child: TextFormField(
-            controller: widget.otpNumberController,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return "Please enter a valid number";
-              }
-              return null;
-            },
-            cursorColor: Theme.of(context).colorScheme.primary,
-            style: const TextStyle(
-              fontFamily: 'Lexend',
-              color: Colors.black,
-            ),
-            decoration: InputDecoration(
-              prefixIcon: const Icon(
-                CupertinoIcons.device_phone_portrait,
+          child: SizedBox(
+            height: 85.0,
+            child: TextFormField(
+              controller: widget.otpNumberController,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Please enter a valid number";
+                }
+                return null;
+              },
+              cursorColor: Theme.of(context).colorScheme.primary,
+              style: const TextStyle(
+                fontFamily: 'Lexend',
+                color: Colors.black,
               ),
-              prefixIconColor: Colors.black,
-              labelText: "Phone Number",
-              labelStyle: const TextStyle(
-                color: Color.fromRGBO(172, 172, 172, 1),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(24.0),
-                  bottomRight: Radius.circular(24.0),
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              decoration: InputDecoration(
+                prefixIcon: const Icon(
+                  CupertinoIcons.device_phone_portrait,
                 ),
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.primary,
+                prefixIconColor: Colors.black,
+                labelText: "Phone Number",
+                labelStyle: const TextStyle(
+                  color: Color.fromRGBO(172, 172, 172, 1),
                 ),
-              ),
-              border: OutlineInputBorder(
-                borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(24.0),
-                  bottomRight: Radius.circular(24.0),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(24.0),
+                    bottomRight: Radius.circular(24.0),
+                  ),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.primary,
+                border: OutlineInputBorder(
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(24.0),
+                    bottomRight: Radius.circular(24.0),
+                  ),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
               ),
             ),

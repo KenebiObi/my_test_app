@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:my_test_app/screens/home_page.dart';
@@ -32,22 +33,13 @@ class _OTPScreenState extends State<OTPScreen> {
     OTPVerificationTextFieldController2.dispose();
     OTPVerificationTextFieldController3.dispose();
     OTPVerificationTextFieldController4.dispose();
+    otpNumberController.dispose();
+    otpCountryCodeController.dispose();
     super.dispose();
-  }
-
-  void getUserNumber() {
-    if (_formKey.currentState!.validate()) {
-      print("Hey");
-      String userCountryNumber =
-          otpCountryCodeController.text.trim().toString() +
-              otpNumberController.text.trim().toString();
-      print(userCountryNumber);
-    }
   }
 
   final _formKey = GlobalKey<FormState>();
   bool _isChanged = false;
-
   void continueToHome() {
     if (_formKey.currentState!.validate()) {
       Navigator.push(
@@ -59,13 +51,59 @@ class _OTPScreenState extends State<OTPScreen> {
     }
   }
 
+  String userCountryNumber = '';
+  void getUserNumber() {
+    final phoneNumber = otpNumberController.text.trim().startsWith('0')
+        ? otpNumberController.text.trim().substring(1)
+        : otpNumberController.text.trim();
+    print(phoneNumber.trim());
+    if (_formKey.currentState!.validate()) {
+      userCountryNumber =
+          otpCountryCodeController.text.trim().toString() + phoneNumber;
+      print(userCountryNumber);
+    }
+  }
+
+  Future verify() async {
+    if (_formKey.currentState!.validate()) {
+      if (otpNumberController.text.isNotEmpty &&
+          otpCountryCodeController.text.isNotEmpty) {
+        print("+$userCountryNumber");
+        try {
+          await FirebaseAuth.instance.verifyPhoneNumber(
+            phoneNumber: "+$userCountryNumber".trim(),
+            verificationCompleted: (PhoneAuthCredential credential) {},
+            verificationFailed: (FirebaseAuthException error) {
+              print(error);
+              ScaffoldMessenger.of(context).clearSnackBars();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(error.message ?? 'Verification failed.'),
+                ),
+              );
+            },
+            codeSent: (String verificationId, int? resendToken) {},
+            codeAutoRetrievalTimeout: (String verificationId) {},
+          );
+        } on FirebaseAuthException catch (error) {
+          print(error);
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(error.message ?? 'Verification failed.'),
+            ),
+          );
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(
                 height: 68.0,
@@ -122,6 +160,9 @@ class _OTPScreenState extends State<OTPScreen> {
 
               Form(
                 key: _formKey,
+                onChanged: () {
+                  _formKey.currentState!.validate();
+                },
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width - 64.0,
                   child: !_isChanged
@@ -156,10 +197,7 @@ class _OTPScreenState extends State<OTPScreen> {
                         ),
                 ),
               ),
-
-              !_isChanged
-                  ? const SizedBox(height: 50.0)
-                  : const SizedBox(height: 26.0),
+              const SizedBox(height: 26.0),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   minimumSize:
@@ -179,6 +217,7 @@ class _OTPScreenState extends State<OTPScreen> {
                       if (_isChanged != true) {
                         _isChanged = !_isChanged;
                         getUserNumber();
+                        verify();
                       } else {
                         continueToHome();
                       }

@@ -3,10 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class OTPTImerWidget extends StatefulWidget {
-  // final bool start;
   OTPTImerWidget({
     super.key,
-    // required this.start,
   });
 
   @override

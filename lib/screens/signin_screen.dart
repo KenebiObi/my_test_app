@@ -49,6 +49,7 @@ class _SignInScreenState extends State<SignInScreen> {
         );
         print("NIce");
       } on FirebaseAuthException catch (error) {
+        print(error);
         ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
