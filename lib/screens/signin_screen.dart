@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_test_app/screens/home_page.dart';
 import 'package:my_test_app/screens/login_screen.dart';
+import 'package:my_test_app/screens/otp_screen.dart';
 
 final _firebase = FirebaseAuth.instance;
 
@@ -38,11 +39,12 @@ class _SignInScreenState extends State<SignInScreen> {
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
+        print(userCredential);
         print("User created");
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => HomePage(),
+            builder: (context) => OTPScreen(),
           ),
         );
         print("NIce");
@@ -224,7 +226,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

@@ -122,6 +122,7 @@ class _SavePasswordScreenState extends State<SavePasswordScreen> {
                     child: CircularProgressIndicator(),
                   );
                 } else if (snapshot.hasError) {
+                  print(snapshot.error);
                   return const Center(
                     child: Text("Error fetching data"),
                   );

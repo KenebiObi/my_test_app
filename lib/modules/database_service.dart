@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_test_app/modules/user_details.dart';
 
-const String USER_DEATILS_COLLECTION_REF = "userdetails";
+const String USER_DEATILS_COLLECTION_REF = "users";
 
 class DataBaseServices {
   final firebase = FirebaseFirestore.instance;
@@ -21,7 +21,7 @@ class DataBaseServices {
             toFirestore: (userdetail, _) => userdetail.toJson());
   }
   Stream<QuerySnapshot> getUsserDetails() {
-    return _userdetailsRef.snapshots();
+    return _userdetailsRef.orderBy("createdOn", descending: true).snapshots();
   }
 
   // For getting data from firestore

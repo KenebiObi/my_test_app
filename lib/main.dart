@@ -3,9 +3,11 @@ import "package:cloud_firestore/cloud_firestore.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_core/firebase_core.dart";
 import "package:flutter/material.dart";
+import "package:flutter_native_splash/flutter_native_splash.dart";
 import "package:my_test_app/screens/home_page.dart";
 // import 'package:my_test_app/home_page.dart';
 import 'package:my_test_app/screens/auth_screen.dart';
+import "package:my_test_app/screens/otp_screen.dart";
 import "package:my_test_app/screens/signin_screen.dart";
 import "package:my_test_app/screens/splash_screen.dart";
 
@@ -13,12 +15,17 @@ import "firebase_options.dart";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   FirebaseFirestore.instance.settings =
       const Settings(persistenceEnabled: true);
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   runApp(PasswordApp());
+  FlutterNativeSplash.remove();
 }
 
 final appTheme = ThemeData(
@@ -47,7 +54,7 @@ class _PasswordAppState extends State<PasswordApp> {
             return SplashScreen();
           }
           if (userSnapshot.hasData) {
-            return const HomePage();
+            return const OTPScreen();
           }
           return AuthScreen();
         },

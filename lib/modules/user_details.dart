@@ -3,16 +3,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserDetails {
   String account;
   String password;
+  Timestamp createdOn;
 
   UserDetails({
     required this.account,
     required this.password,
+    required this.createdOn,
   });
 
   UserDetails.fromJson(Map<String, Object?> json)
       : this(
           account: json["account"]! as String,
           password: json["password"]! as String,
+          createdOn: json['createdOn']! as Timestamp,
         );
 
   UserDetails copyWith({
@@ -22,6 +25,7 @@ class UserDetails {
     return UserDetails(
       account: account ?? this.account,
       password: password ?? this.password,
+      createdOn: createdOn ?? this.createdOn,
     );
   }
 
@@ -29,6 +33,7 @@ class UserDetails {
     return {
       "account": account,
       "password": password,
+      "createdOn": createdOn,
     };
   }
 }

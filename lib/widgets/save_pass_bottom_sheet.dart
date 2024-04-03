@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_test_app/modules/database_service.dart';
 import 'package:my_test_app/modules/user_details.dart';
@@ -108,6 +109,7 @@ class _SavePassBottomSheetWidgetState extends State<SavePassBottomSheetWidget> {
                       UserDetails userdetail = UserDetails(
                         account: widget.accountController.text.trim(),
                         password: widget.passwordController.text.trim(),
+                        createdOn: Timestamp.now(),
                       );
                       _databaseServices.addUserDetails(userdetail);
                     });

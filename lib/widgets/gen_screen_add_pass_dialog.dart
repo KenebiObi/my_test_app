@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_test_app/modules/database_service.dart';
 import 'package:my_test_app/modules/user_details.dart';
@@ -82,9 +83,9 @@ class _GenScreenAddPassDialogState extends State<GenScreenAddPassDialog> {
                 if (widget.controller.text.trim().isNotEmpty) {
                   setState(() {
                     UserDetails userdetail = UserDetails(
-                      account: widget.controller.text.trim(),
-                      password: widget.passwordText.trim(),
-                    );
+                        account: widget.controller.text.trim(),
+                        password: widget.passwordText.trim(),
+                        createdOn: Timestamp.now());
                     _databaseServices.addUserDetails(userdetail);
                   });
                   print("Account : ${widget.controller.text.trim()}");
