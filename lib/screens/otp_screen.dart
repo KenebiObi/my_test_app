@@ -38,8 +38,9 @@ class _OTPScreenState extends State<OTPScreen> {
   void getUserNumber() {
     if (_formKey.currentState!.validate()) {
       print("Hey");
-      String userCountryNumber = otpNumberController.text.trim().toString() +
-          otpCountryCodeController.text.trim().toString();
+      String userCountryNumber =
+          otpCountryCodeController.text.trim().toString() +
+              otpNumberController.text.trim().toString();
       print(userCountryNumber);
     }
   }
@@ -156,7 +157,9 @@ class _OTPScreenState extends State<OTPScreen> {
                 ),
               ),
 
-              const SizedBox(height: 50.0),
+              !_isChanged
+                  ? const SizedBox(height: 50.0)
+                  : const SizedBox(height: 26.0),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   minimumSize:
@@ -175,7 +178,7 @@ class _OTPScreenState extends State<OTPScreen> {
                     () {
                       if (_isChanged != true) {
                         _isChanged = !_isChanged;
-                        getUserNumber;
+                        getUserNumber();
                       } else {
                         continueToHome();
                       }
