@@ -1,13 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_test_app/backend/google_auth_services.dart';
+import 'package:my_test_app/screens/auth_screens/forgot_password_screen.dart';
 import 'package:my_test_app/screens/hidden_drawer_menu_screen.dart';
 import 'package:my_test_app/screens/auth_screens/signup_screen.dart';
+import 'package:my_test_app/widgets/auth_spiner_dialog.dart';
 import 'package:my_test_app/widgets/background_screen_decor.dart';
 import 'package:my_test_app/widgets/constants/authscreen_widgets/auth_state_checker.dart';
 import 'package:my_test_app/widgets/constants/authscreen_widgets/email_textfield.dart';
+import 'package:my_test_app/widgets/constants/authscreen_widgets/google_signin_button.dart';
 import 'package:my_test_app/widgets/constants/authscreen_widgets/password_textfield.dart';
 import 'package:my_test_app/widgets/constants/authscreen_widgets/signup_login_button.dart';
+import 'package:my_test_app/widgets/forgot_password_button.dart';
 
 final _firebase = FirebaseAuth.instance;
 
@@ -40,6 +44,12 @@ class _LoginScreenState extends State<LoginScreen> {
   Future login() async {
     setState(() {
       _isAuthenticating = true;
+      if (_isAuthenticating) {
+        showDialog(
+          context: context,
+          builder: (context) => const AuthSpinerDialog(),
+        );
+      }
     });
 
     if (_formKey.currentState!.validate()) {
@@ -114,11 +124,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           Visibility(
                             visible: true,
                             child: Text(
-                              "Welecom Back",
+                              "Welcome Back",
                               style: TextStyle(
                                 fontSize: 30.0,
+                                fontFamily: "Lexend",
                                 letterSpacing: 0.5,
-                                fontWeight: FontWeight.w700,
+                                fontWeight: FontWeight.w800,
                                 color: Theme.of(context).colorScheme.primary,
                               ),
                             ),
@@ -144,15 +155,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             isConfirmPassword: false,
                           ),
                           const SizedBox(height: 30.0),
-                          _isAuthenticating
-                              ? CircularProgressIndicator(
-                                  color: Theme.of(context).colorScheme.primary,
-                                )
-                              : SignUpLoginButton(
-                                  onPressed: login,
-                                  isSignUpScreen: false,
-                                ),
+                          SignUpLoginButton(
+                            onPressed: login,
+                            isSignUpScreen: false,
+                          ),
                           const SizedBox(height: 15.0),
+                          const ForgotPasswordButton(),
                           AuthStateChecker(
                             screen: SignUpScreen(),
                             isSignInScreen: false,
@@ -164,33 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           const SizedBox(height: 10.0),
-                          ElevatedButton.icon(
-                            onPressed: () async {
-                              // GoogleAuthService().signInWithGoogle();
-                              final User? user =
-                                  await authService.signInWithGoogle();
-                              if (user != null) {
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (context) => HiddenDrawer(),
-                                  ),
-                                );
-                              } else {
-                                // Handle sign-in cancellation or error
-                                // Show a message or take appropriate action
-                              }
-                            },
-                            icon: Image.asset(
-                              "assets/images/google.png",
-                              height: 30.0,
-                            ),
-                            label: const Text(
-                              "Sign In with google",
-                              style: TextStyle(
-                                fontSize: 18.0,
-                              ),
-                            ),
-                          ),
+                          GoogleSignInButton(authService: authService),
                         ],
                       ),
                     ),

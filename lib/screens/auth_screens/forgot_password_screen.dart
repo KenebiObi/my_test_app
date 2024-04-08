@@ -1,0 +1,125 @@
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:my_test_app/widgets/background_screen_decor.dart';
+import 'package:my_test_app/widgets/constants/authscreen_widgets/email_textfield.dart';
+
+class ForgotPasswordScreen extends StatefulWidget {
+  @override
+  _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
+}
+
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool _isLoading = false;
+
+  Future<void> _resetPassword() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      await _auth.sendPasswordResetEmail(email: _emailController.text.trim());
+      // Show success message or navigate to login screen
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Password reset email sent. Please check your email.'),
+        ),
+      );
+    } catch (e) {
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content:
+              Text('Failed to send password reset email. Please try again.'),
+        ),
+      );
+    }
+
+    setState(() {
+      _isLoading = false;
+      Navigator.pop(context);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: BackgroundScreenDecor(
+        isNotAuthScreen: false,
+        screen: SafeArea(
+          child: Stack(
+            children: [
+              Positioned(
+                top: 50.0,
+                left: 10.0,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Icon(
+                        Icons.arrow_back_ios_rounded,
+                        size: 30.0,
+                        color: Theme.of(context).colorScheme.background,
+                      ),
+                    ),
+                    const SizedBox(width: 10.0),
+                    SizedBox(
+                      width: 150.0,
+                      child: Text(
+                        "Forgot Password",
+                        maxLines: 2,
+                        softWrap: true,
+                        style: TextStyle(
+                          fontSize: 30.0,
+                          fontFamily: "Lexend",
+                          letterSpacing: 0.5,
+                          fontWeight: FontWeight.w800,
+                          color: Theme.of(context).colorScheme.background,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    EmailTextfield(emialController: _emailController),
+                    const SizedBox(height: 20.0),
+                    _isLoading
+                        ? const CircularProgressIndicator()
+                        : ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shadowColor: Theme.of(context).primaryColorLight,
+                              surfaceTintColor:
+                                  Theme.of(context).colorScheme.background,
+                              elevation: 10.0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              minimumSize: const Size(double.infinity, 60.0),
+                            ),
+                            onPressed: _isLoading ? null : _resetPassword,
+                            child: Text(
+                              'Reset Password',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
+                          ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

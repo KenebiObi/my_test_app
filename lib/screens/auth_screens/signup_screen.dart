@@ -8,6 +8,7 @@ import 'package:my_test_app/widgets/auth_spiner_dialog.dart';
 import 'package:my_test_app/widgets/background_screen_decor.dart';
 import 'package:my_test_app/widgets/constants/authscreen_widgets/auth_state_checker.dart';
 import 'package:my_test_app/widgets/constants/authscreen_widgets/email_textfield.dart';
+import 'package:my_test_app/widgets/constants/authscreen_widgets/google_signin_button.dart';
 import 'package:my_test_app/widgets/constants/authscreen_widgets/password_textfield.dart';
 import 'package:my_test_app/widgets/constants/authscreen_widgets/signup_login_button.dart';
 
@@ -45,14 +46,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (_passwordController.text.trim() ==
         _confirmPasswordController.text.trim()) {
       if (_formKey.currentState!.validate()) {
-        setState(() {
-          _isAuthenticating = true;
-          _doNotMatch = false;
-          showDialog(
-            context: context,
-            builder: (context) => AuthSpinerDialog(),
-          );
-        });
+        setState(
+          () {
+            _isAuthenticating = true;
+            _doNotMatch = false;
+            if (_isAuthenticating) {
+              showDialog(
+                context: context,
+                builder: (context) => const AuthSpinerDialog(),
+              );
+            }
+          },
+        );
 
         try {
           UserCredential userCredential =
@@ -174,14 +179,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             isConfirmPassword: true,
                           ),
                           const SizedBox(height: 30.0),
-                          _isAuthenticating
-                              ? CircularProgressIndicator(
-                                  color: Theme.of(context).colorScheme.primary,
-                                )
-                              : SignUpLoginButton(
-                                  onPressed: signUp,
-                                  isSignUpScreen: true,
-                                ),
+                          SignUpLoginButton(
+                            onPressed: signUp,
+                            isSignUpScreen: true,
+                          ),
 
                           _doNotMatch
                               ? const Column(
@@ -210,32 +211,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                           ),
                           const SizedBox(height: 10.0),
-                          ElevatedButton.icon(
-                            onPressed: () async {
-                              final User? user =
-                                  await authService.signInWithGoogle();
-                              if (user != null) {
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (context) => HiddenDrawer(),
-                                  ),
-                                );
-                              } else {
-                                // Handle sign-in cancellation or error
-                                // Show a message or take appropriate action
-                              }
-                            },
-                            icon: Image.asset(
-                              "assets/images/google.png",
-                              height: 30.0,
-                            ),
-                            label: const Text(
-                              "Sign In with google",
-                              style: TextStyle(
-                                fontSize: 18.0,
-                              ),
-                            ),
-                          ),
+                          GoogleSignInButton(authService: authService),
                         ],
                       ),
                     ),
