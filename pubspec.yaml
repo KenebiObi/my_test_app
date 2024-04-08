@@ -46,6 +46,7 @@ dependencies:
   hidden_drawer_menu: ^3.0.1
   numberpicker: ^2.1.2
   google_sign_in: ^6.1.6
+  encrypt: ^5.0.3
 
 dev_dependencies:
   flutter_test:
