@@ -5,8 +5,12 @@ import 'package:flutter/material.dart';
 class OTPTImerWidget extends StatefulWidget {
   OTPTImerWidget({
     super.key,
+    required this.isDone,
+    required this.executable,
   });
 
+  bool isDone;
+  void Function() executable;
   @override
   State<OTPTImerWidget> createState() => _OTPTImerWidgetState();
 }
@@ -37,6 +41,9 @@ class _OTPTImerWidgetState extends State<OTPTImerWidget> {
           _timer.cancel();
         }
       });
+      if (_secondsRemaining == 0) {
+        widget.isDone = true;
+      }
     });
   }
 
@@ -53,20 +60,23 @@ class _OTPTImerWidgetState extends State<OTPTImerWidget> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "$_secondsRemaining seconds",
+          _secondsRemaining == 0 ? "OTP Expired" : "$_secondsRemaining seconds",
           style: const TextStyle(
             color: Color.fromRGBO(172, 172, 172, 1),
-            fontFamily: "Lexend",
+            fontFamily: "Karla",
             fontSize: 14.0,
           ),
         ),
         TextButton(
-          onPressed: _restartTimer,
+          onPressed: () {
+            _restartTimer();
+            widget.executable();
+          },
           child: Text(
             "Resend OTP",
             style: TextStyle(
               color: Theme.of(context).colorScheme.primary,
-              fontFamily: "Lexend",
+              fontFamily: "Karla",
               fontSize: 14.0,
             ),
           ),

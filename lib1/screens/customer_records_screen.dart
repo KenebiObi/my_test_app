@@ -42,7 +42,7 @@ class CustomerRecordsScreen extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8.0),
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.background,
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

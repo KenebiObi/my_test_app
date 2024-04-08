@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:my_test_app/modules/user_details.dart';
+import 'package:my_test_app/backend/user_details.dart';
 
 class SavedPasswordTileWidget extends StatefulWidget {
   SavedPasswordTileWidget({
@@ -34,131 +34,106 @@ class _SavedPasswordTileWidgetState extends State<SavedPasswordTileWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
+      padding: const EdgeInsets.all(12.0),
+      width: MediaQuery.of(context).size.width * 0.90,
+      height: 70.0,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.error,
-        borderRadius: BorderRadius.circular(12.0),
+        color: Theme.of(context).primaryColorLight,
+        borderRadius: BorderRadius.circular(20.0),
       ),
-      child: Container(
-        padding: const EdgeInsets.all(12.0),
-        width: MediaQuery.of(context).size.width * 0.90,
-        height: 70.0,
-        decoration: BoxDecoration(
-          color: Theme.of(context).primaryColorLight,
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 100,
-                        child: Text(
-                          softWrap: true,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          widget.userdetail.account,
-                          style: const TextStyle(
-                            fontSize: 18.0,
-                          ),
-                        ),
-                      ),
-                      // const Spacer(),
-                      Container(
-                        width: 100,
-                        child: Text(
-                          _isVisible
-                              ? widget.userdetail.password
-                              : '*' * widget.userdetail.password.length,
-                          softWrap: true,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.tertiary,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _isVisible = !_isVisible;
-                      });
-                    },
-                    icon: Icon(
-                      !_isVisible ? Icons.visibility : Icons.visibility_off,
-                      size: 20.0,
-                      color: !_isVisible ? Colors.white : Colors.grey[700],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Column(
-            //   children: [
-            //     Spacer(),
-            //     Row(
-            //       children: [
-            //         Icon(
-            //           CupertinoIcons.back,
-            //           color: Theme.of(context).colorScheme.tertiary,
-            //         ),
-            //         Text(
-            //           "Swipe to delete",
-            //           style: TextStyle(
-            //             fontSize: 12.0,
-            //             color: Theme.of(context).colorScheme.tertiary,
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ],
-            // ),
-            Row(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(
-                  onPressed: widget.altFunction,
-                  icon: const Icon(Icons.edit),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 100,
+                      child: Text(
+                        softWrap: true,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        widget.userdetail.account,
+                        style: const TextStyle(
+                          fontSize: 18.0,
+                        ),
+                      ),
+                    ),
+                    // const Spacer(),
+                    SizedBox(
+                      width: 100,
+                      child: Text(
+                        _isVisible
+                            ? widget.userdetail.password
+                            : '*' * widget.userdetail.password.length,
+                        softWrap: true,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.tertiary,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 IconButton(
                   onPressed: () {
-                    Clipboard.setData(
-                      ClipboardData(text: widget.passwordForCopy),
-                    ).then(
-                      (_) {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text("Password Copied!"),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: const Text(
-                                  "Ok",
-                                  style: TextStyle(
-                                    fontSize: 20.0,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    );
+                    setState(() {
+                      _isVisible = !_isVisible;
+                    });
                   },
-                  icon: const Icon(Icons.copy),
+                  icon: Icon(
+                    !_isVisible ? Icons.visibility : Icons.visibility_off,
+                    size: 20.0,
+                    color: !_isVisible
+                        ? Theme.of(context).colorScheme.background
+                        : Colors.grey[700],
+                  ),
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+          Row(
+            children: [
+              IconButton(
+                onPressed: widget.altFunction,
+                icon: const Icon(Icons.edit),
+              ),
+              IconButton(
+                onPressed: () {
+                  Clipboard.setData(
+                    ClipboardData(text: widget.passwordForCopy),
+                  ).then(
+                    (_) {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text("Password Copied!"),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text(
+                                "Ok",
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+                icon: const Icon(Icons.copy),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

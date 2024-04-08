@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:my_test_app/modules/database_service.dart';
-import 'package:my_test_app/modules/user_details.dart';
-import 'package:my_test_app/modules/user_password.dart';
+import 'package:my_test_app/backend/database_service.dart';
+import 'package:my_test_app/backend/user_details.dart';
+import 'package:my_test_app/backend/user_password.dart';
 
 class GenScreenAddPassDialog extends StatefulWidget {
   GenScreenAddPassDialog({

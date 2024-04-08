@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 
 class OTPVerificationTextField extends StatelessWidget {
-  const OTPVerificationTextField(
-      {super.key,
-      required this.otpVerificationTextFieldController,
-      required this.isLast});
+  const OTPVerificationTextField({
+    super.key,
+    required this.otpVerificationTextFieldController,
+    required this.topLeft,
+    required this.bottomLeft,
+    required this.topRight,
+    required this.bottomRight,
+    required this.isLast,
+  });
   final TextEditingController otpVerificationTextFieldController;
+  final double topLeft;
+  final double bottomLeft;
+  final double topRight;
+  final double bottomRight;
   final bool isLast;
   @override
   Widget build(BuildContext context) {
@@ -13,8 +22,8 @@ class OTPVerificationTextField extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(
-          width: 62.0,
-          height: 85.0,
+          width: 56.0,
+          height: 83.0,
           child: TextFormField(
             controller: otpVerificationTextFieldController,
             validator: (value) {
@@ -31,7 +40,7 @@ class OTPVerificationTextField extends StatelessWidget {
             // obscureText: true,
             textAlign: TextAlign.center,
             style: const TextStyle(
-              fontFamily: 'Lexend',
+              fontFamily: 'Karla',
               fontWeight: FontWeight.w500,
               fontSize: 24,
               color: Colors.black,
@@ -48,13 +57,23 @@ class OTPVerificationTextField extends StatelessWidget {
                 vertical: 15.0,
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(topLeft),
+                  bottomLeft: Radius.circular(bottomLeft),
+                  topRight: Radius.circular(topRight),
+                  bottomRight: Radius.circular(bottomRight),
+                ),
                 borderSide: BorderSide(
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(topLeft),
+                  bottomLeft: Radius.circular(bottomLeft),
+                  topRight: Radius.circular(topRight),
+                  bottomRight: Radius.circular(bottomRight),
+                ),
                 borderSide: BorderSide(
                   color: Theme.of(context).colorScheme.primary,
                 ),

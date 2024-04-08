@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_test_app/modules/database_service.dart';
-import 'package:my_test_app/modules/user_details.dart';
-import 'package:my_test_app/modules/user_password.dart';
+import 'package:my_test_app/backend/database_service.dart';
+import 'package:my_test_app/backend/user_details.dart';
+import 'package:my_test_app/backend/user_password.dart';
 import 'package:my_test_app/widgets/save_pass_bottom_sheet.dart';
 import 'package:my_test_app/widgets/save_screen_add_pass_dialog.dart';
 import 'package:my_test_app/widgets/saved_password_tile.dart';
@@ -72,8 +72,12 @@ class _SavePasswordScreenState extends State<SavePasswordScreen> {
     }
   }
 
+  int userDetailsLength = 0;
+
   @override
   Widget build(BuildContext context) {
+    final deviceHeight = MediaQuery.of(context).size.height;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
@@ -83,12 +87,6 @@ class _SavePasswordScreenState extends State<SavePasswordScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                "Saved Passwords",
-                style: TextStyle(
-                  fontSize: 23.0,
-                ),
-              ),
               ElevatedButton.icon(
                 onPressed: () {
                   showModalBottomSheet(
@@ -104,109 +102,122 @@ class _SavePasswordScreenState extends State<SavePasswordScreen> {
                   });
                 },
                 icon: const Icon(Icons.add),
-                label: const Text("Add Password"),
-              )
+                label: const Text(
+                  "Create Password",
+                  style: TextStyle(
+                    fontSize: 18.0,
+                  ),
+                ),
+              ),
+              Text(
+                userDetailsLength == 0
+                    ? "No Passwords"
+                    : userDetailsLength == 1
+                        ? "$userDetailsLength Password"
+                        : "$userDetailsLength Passwords",
+                style: const TextStyle(
+                  fontSize: 23.0,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 20.0),
-          // This is the part the that contains all ive been following from the video
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.70,
-            width: double.infinity,
-            child: StreamBuilder(
-              stream: _databaseServices.getUsserDetails(),
-              builder: (ctx, snapshot) {
-                List userDetails = snapshot.data?.docs ?? [];
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (snapshot.hasError) {
-                  print(snapshot.error);
-                  return const Center(
-                    child: Text("Error fetching data"),
-                  );
-                } else if (!snapshot.hasData || snapshot.data == null) {
-                  return const Center(
-                    child: Text("Nothing here"),
-                  );
-                } else {
-                  // List userdetails = snapshot.data?.docs ?? [];
-                  print(userDetails);
-                  if (userDetails.isEmpty) {
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.circular(20.0),
+            ),
+            child: SizedBox(
+              width: double.infinity,
+              height: deviceHeight * 0.80,
+              child: StreamBuilder(
+                stream: _databaseServices.getUsserDetails(),
+                builder: (ctx, snapshot) {
+                  List userDetails = snapshot.data?.docs ?? [];
+                  userDetailsLength = userDetails.length;
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return const Center(
+                      child: Text("Error fetching data"),
+                    );
+                  } else if (!snapshot.hasData || snapshot.data == null) {
                     return const Center(
                       child: Text("Nothing here"),
                     );
-                  }
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: userDetails.length,
-                    itemBuilder: (ctx, index) {
-                      UserDetails userdetail = userDetails[index].data();
-                      String userdetailId = userDetails[index].id;
-                      print(userdetail.password);
-                      return Column(
-                        children: [
-                          Dismissible(
-                            // background: Container(
-                            //   color: Theme.of(context)
-                            //       .colorScheme
-                            //       .error, // Specify the desired background color
-                            //   alignment: Alignment.centerRight,
-                            //   padding: EdgeInsets.symmetric(horizontal: 20),
-                            //   child: Icon(Icons.delete, color: Colors.white),
-                            // ),
-                            key: ValueKey(userDetails[index]),
-                            onDismissed: (direction) {
-                              setState(() {
-                                _databaseServices
-                                    .deleteUserDetails(userdetailId);
-                                restoreDeletedUserDetails(
-                                  userDetails,
-                                  userdetailId,
-                                  userdetail,
-                                  index,
-                                );
-                              });
-                            },
-                            child: SavedPasswordTileWidget(
-                              altFunction: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) => SaveScreenAddPassDialog(
-                                    controller: _editAccountController,
-                                    password: _editPasswordController,
-                                    executable: () {
-                                      setState(() {
-                                        UserDetails updatedUserDetails =
-                                            userdetail.copyWith(
-                                          account: _editAccountController.text
-                                              .trim(),
-                                          password: _editPasswordController.text
-                                              .trim(),
-                                        );
-                                        _databaseServices.updateUserDetails(
-                                          userdetailId,
-                                          updatedUserDetails,
-                                        );
-                                      });
-                                    },
-                                  ),
-                                );
-                              },
-                              userdetail: userdetail,
-                              passwordForCopy: userdetail.password,
-                              index: 1,
-                            ),
-                          ),
-                          const SizedBox(height: 15.0),
-                        ],
+                  } else {
+                    print(userDetails);
+                    if (userDetails.isEmpty) {
+                      return const Center(
+                        child: Text("Nothing here"),
                       );
-                    },
-                  );
-                  ;
-                }
-              },
+                    }
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: userDetails.length,
+                      itemBuilder: (ctx, index) {
+                        UserDetails userdetail = userDetails[index].data();
+                        String userdetailId = userDetails[index].id;
+                        print(userdetail.password);
+                        return Column(
+                          children: [
+                            Dismissible(
+                              key: ValueKey(userDetails[index]),
+                              onDismissed: (direction) {
+                                setState(() {
+                                  _databaseServices
+                                      .deleteUserDetails(userdetailId);
+                                  restoreDeletedUserDetails(
+                                    userDetails,
+                                    userdetailId,
+                                    userdetail,
+                                    index,
+                                  );
+                                });
+                              },
+                              child: SavedPasswordTileWidget(
+                                altFunction: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) =>
+                                        SaveScreenAddPassDialog(
+                                      controller: _editAccountController,
+                                      password: _editPasswordController,
+                                      executable: () {
+                                        setState(() {
+                                          UserDetails updatedUserDetails =
+                                              userdetail.copyWith(
+                                            account: _editAccountController.text
+                                                .trim(),
+                                            password: _editPasswordController
+                                                .text
+                                                .trim(),
+                                          );
+                                          _databaseServices.updateUserDetails(
+                                            userdetailId,
+                                            updatedUserDetails,
+                                          );
+                                        });
+                                      },
+                                    ),
+                                  );
+                                },
+                                userdetail: userdetail,
+                                passwordForCopy: userdetail.password,
+                                index: 1,
+                              ),
+                            ),
+                            const SizedBox(height: 8.5),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
             ),
           ),
         ],

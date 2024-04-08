@@ -103,7 +103,7 @@
 //                                       child: const Text(
 //                                         "Open",
 //                                         style: TextStyle(
-//                                           color: Colors.white,
+//                                           color: Theme.of(context).colorScheme.background,
 //                                           fontSize: 15.0,
 //                                           fontWeight: FontWeight.bold,
 //                                         ),

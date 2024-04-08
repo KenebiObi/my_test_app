@@ -1,11 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:my_test_app/modules/user_password.dart';
-import 'package:my_test_app/screens/save_password_screen.dart';
 import 'package:my_test_app/widgets/character_option.dart';
 import 'package:my_test_app/widgets/copy_password_button.dart';
+import 'package:my_test_app/widgets/number_picker_widget.dart';
 import 'package:my_test_app/widgets/save_password_button.dart';
 import 'package:my_test_app/widgets/gen_screen_add_pass_dialog.dart';
 
@@ -21,7 +19,7 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
   bool _addLowerCase = false;
   bool _addNumbers = false;
   bool _addSymbols = false;
-  int mainSliderValue = 0;
+  int mainValue = 0;
 
   String _allCharacters =
       '!@#\$%^&*()_+qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890';
@@ -43,34 +41,35 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
   void generatePassword() {
     String generatedCharacters = "";
 
-    if (options.length != 0) {
-      while (generatedCharacters.length < mainSliderValue) {
+    int remainingLength = mainValue.round();
+
+    if (options.isNotEmpty) {
+      while (remainingLength > 0) {
         for (var option in options) {
-          if (generatedCharacters.length <= mainSliderValue) {
+          if (remainingLength > 0) {
             String randomChar =
                 theMap[option]![Random().nextInt(theMap[option]!.length)];
-            print('randomChar is $randomChar');
             generatedCharacters += randomChar;
+            remainingLength--;
           }
-          print(generatedCharacters);
         }
       }
     } else {
-      for (int i = 0; i < mainSliderValue; i++) {
-        generatedCharacters += _allLowerCaseChars[Random().nextInt(
-          _allLowerCaseChars.length,
-        )];
+      for (int i = 0; i < mainValue; i++) {
+        generatedCharacters +=
+            _allLowerCaseChars[Random().nextInt(_allLowerCaseChars.length)];
       }
     }
-    List listOfGeneratedChars = generatedCharacters.split('');
-    print(listOfGeneratedChars);
+
+    List<String> listOfGeneratedChars = generatedCharacters.split('');
     listOfGeneratedChars.shuffle(Random());
     String shuffledString = listOfGeneratedChars.join('');
-    print(shuffledString);
-    _randomPassword = shuffledString; // Randomly generated password
-    print(_randomPassword);
-    if (_randomPassword == "") {
+    _randomPassword =
+        shuffledString.substring(0, mainValue); // Trim to desired length
+
+    if (_randomPassword.isEmpty) {
       _randomPassword = "password";
+      print("Password set to 'password'");
     }
   }
 
@@ -84,10 +83,13 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Center(
+    // final deviceWidth = MediaQuery.of(context).size.width;
+
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 30.0),
             Container(
@@ -95,7 +97,7 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColorLight,
-                borderRadius: BorderRadius.circular(30.0),
+                borderRadius: BorderRadius.circular(20.0),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -109,7 +111,7 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
                       children: [
                         const Spacer(),
                         Text(
-                          ("${mainSliderValue.toString()} Characters"),
+                          ("${mainValue.toString()} Characters"),
                         ),
                       ],
                     ),
@@ -130,7 +132,7 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
               icon: Icons.text_fields_rounded,
               color: _addLowerCase
                   ? Theme.of(context).primaryColorLight
-                  : Colors.white,
+                  : Theme.of(context).colorScheme.background,
               chracterSelection: "Add lower case characters",
               onTap: () {
                 setState(() {
@@ -149,7 +151,7 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
               icon: Icons.text_fields_rounded,
               color: _addUpperCase
                   ? Theme.of(context).primaryColorLight
-                  : Colors.white,
+                  : Theme.of(context).colorScheme.background,
               chracterSelection: "Add upper case characters",
               onTap: () {
                 setState(() {
@@ -168,7 +170,7 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
               icon: Icons.looks_one_rounded,
               color: _addNumbers
                   ? Theme.of(context).primaryColorLight
-                  : Colors.white,
+                  : Theme.of(context).colorScheme.background,
               chracterSelection: "Add numbers",
               onTap: () {
                 setState(() {
@@ -187,7 +189,7 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
               icon: Icons.star_rate_rounded,
               color: _addSymbols
                   ? Theme.of(context).primaryColorLight
-                  : Colors.white,
+                  : Theme.of(context).colorScheme.background,
               chracterSelection: "Add special characters",
               onTap: () {
                 setState(() {
@@ -201,53 +203,41 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
                 }
               },
             ),
-            SliderTheme(
-              data: SliderTheme.of(context).copyWith(
-                trackShape: const RoundedRectSliderTrackShape(),
-                trackHeight: 15.0,
-                thumbShape: const RoundSliderThumbShape(
-                  enabledThumbRadius: 12.0,
+            const SizedBox(height: 15.0),
+            // Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CopyPasswordButton(clipBoardText: _randomPassword),
+                const SizedBox(width: 15.0),
+                NumberPickerWidget(
+                  mainValue: mainValue,
+                  executable: (newValue) {
+                    setState(
+                      () {
+                        mainValue = newValue;
+                        print(mainValue);
+                        generatePassword();
+                      },
+                    );
+                  },
                 ),
-              ),
-              child: Slider(
-                autofocus: true,
-                min: 0.0,
-                max: 20.0,
-                label: "${mainSliderValue.round()}",
-                value: mainSliderValue.toDouble(),
-                onChanged: (newValue) {
-                  setState(
-                    () {
-                      mainSliderValue = newValue.round();
-                      print(mainSliderValue);
-                      generatePassword();
-                    },
-                  );
-                },
-              ),
+                const SizedBox(width: 15.0),
+                SavePasswordButton(
+                  onTap: () {
+                    _password = _randomPassword; // MAIN PASSWORD
+                    showDialog(
+                      context: context,
+                      builder: (context) => GenScreenAddPassDialog(
+                        controller: _accountController,
+                        passwordText: _password,
+                      ),
+                    );
+                  },
+                )
+              ],
             ),
-            const SizedBox(height: 30.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CopyPasswordButton(clipBoardText: _randomPassword),
-                  SavePasswordButton(
-                    onTap: () {
-                      _password = _randomPassword; // MAIN PASSWORD
-                      showDialog(
-                        context: context,
-                        builder: (context) => GenScreenAddPassDialog(
-                          controller: _accountController,
-                          passwordText: _password,
-                        ),
-                      );
-                    },
-                  )
-                ],
-              ),
-            )
+            const SizedBox(height: 50.0),
           ],
         ),
       ),

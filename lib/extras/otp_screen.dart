@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:my_test_app/extras/otp_auth.dart';
 import 'package:my_test_app/screens/home_page.dart';
-import 'package:my_test_app/widgets/otp_timer_widget.dart';
-import 'package:my_test_app/widgets/otp_verification_textfield.dart';
-import 'package:my_test_app/widgets/otp_number_textfield.dart';
+import 'package:my_test_app/extras/otp_timer_widget.dart';
+import 'package:my_test_app/extras/otp_verification_textfield.dart';
+import 'package:my_test_app/extras/otp_number_textfield.dart';
+import 'package:my_test_app/extras/otp_verification_textfields.dart';
 
 class OTPScreen extends StatefulWidget {
   const OTPScreen({super.key});
@@ -14,6 +16,7 @@ class OTPScreen extends StatefulWidget {
 }
 
 class _OTPScreenState extends State<OTPScreen> {
+  final otpAuth = OTP();
   final TextEditingController OTPVerificationTextFieldController1 =
       TextEditingController();
   final TextEditingController OTPVerificationTextFieldController2 =
@@ -21,6 +24,10 @@ class _OTPScreenState extends State<OTPScreen> {
   final TextEditingController OTPVerificationTextFieldController3 =
       TextEditingController();
   final TextEditingController OTPVerificationTextFieldController4 =
+      TextEditingController();
+  final TextEditingController OTPVerificationTextFieldController5 =
+      TextEditingController();
+  final TextEditingController OTPVerificationTextFieldController6 =
       TextEditingController();
 
   final TextEditingController otpNumberController = TextEditingController();
@@ -33,8 +40,10 @@ class _OTPScreenState extends State<OTPScreen> {
     OTPVerificationTextFieldController2.dispose();
     OTPVerificationTextFieldController3.dispose();
     OTPVerificationTextFieldController4.dispose();
-    otpNumberController.dispose();
-    otpCountryCodeController.dispose();
+    OTPVerificationTextFieldController5.dispose();
+    OTPVerificationTextFieldController6.dispose();
+    // otpNumberController.dispose();
+    // otpCountryCodeController.dispose();
     super.dispose();
   }
 
@@ -42,12 +51,7 @@ class _OTPScreenState extends State<OTPScreen> {
   bool _isChanged = false;
   void continueToHome() {
     if (_formKey.currentState!.validate()) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const HomePage(),
-        ),
-      );
+      otpAuth.validateOtpAndLogin(context, '');
     }
   }
 
@@ -59,10 +63,13 @@ class _OTPScreenState extends State<OTPScreen> {
     print(phoneNumber.trim());
     if (_formKey.currentState!.validate()) {
       userCountryNumber =
-          otpCountryCodeController.text.trim().toString() + phoneNumber;
+          "+${otpCountryCodeController.text.trim().toString()}0${phoneNumber}";
       print(userCountryNumber);
     }
   }
+
+  bool verificationCompleted = false;
+  bool codeSent = true;
 
   Future verify() async {
     if (_formKey.currentState!.validate()) {
@@ -71,20 +78,43 @@ class _OTPScreenState extends State<OTPScreen> {
         print("+$userCountryNumber");
         try {
           await FirebaseAuth.instance.verifyPhoneNumber(
-            phoneNumber: "+$userCountryNumber".trim(),
-            verificationCompleted: (PhoneAuthCredential credential) {},
+            // phoneNumber: '+ $userCountryNumber',
+            phoneNumber: "+2348064788742",
+            verificationCompleted: (PhoneAuthCredential credential) {
+              setState(() {
+                verificationCompleted = true;
+              });
+            },
             verificationFailed: (FirebaseAuthException error) {
               print(error);
-              ScaffoldMessenger.of(context).clearSnackBars();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(error.message ?? 'Verification failed.'),
-                ),
-              );
+              print(error.code);
+              if (error.code == "39") {
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("There seems ot be a network problem"),
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(error.message ?? 'Verification failed.'),
+                  ),
+                );
+              }
+              setState(() {
+                _isChanged = !_isChanged;
+              });
             },
-            codeSent: (String verificationId, int? resendToken) {},
+            codeSent: (String verificationId, int? resendToken) {
+              setState(() {
+                codeSent = true;
+              });
+            },
             codeAutoRetrievalTimeout: (String verificationId) {},
           );
+          print("sent");
         } on FirebaseAuthException catch (error) {
           print(error);
           ScaffoldMessenger.of(context).clearSnackBars();
@@ -170,33 +200,23 @@ class _OTPScreenState extends State<OTPScreen> {
                           otpNumberController: otpNumberController,
                           otpCountryCodeController: otpCountryCodeController,
                         )
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            OTPVerificationTextField(
-                              otpVerificationTextFieldController:
-                                  OTPVerificationTextFieldController1,
-                              isLast: false,
-                            ),
-                            OTPVerificationTextField(
-                              otpVerificationTextFieldController:
-                                  OTPVerificationTextFieldController2,
-                              isLast: false,
-                            ),
-                            OTPVerificationTextField(
-                              otpVerificationTextFieldController:
-                                  OTPVerificationTextFieldController3,
-                              isLast: false,
-                            ),
-                            OTPVerificationTextField(
-                              otpVerificationTextFieldController:
-                                  OTPVerificationTextFieldController4,
-                              isLast: false,
-                            ),
-                          ],
+                      : OTPVerificationTextfields(
+                          OTPVerificationTextFieldController1:
+                              OTPVerificationTextFieldController1,
+                          OTPVerificationTextFieldController2:
+                              OTPVerificationTextFieldController2,
+                          OTPVerificationTextFieldController3:
+                              OTPVerificationTextFieldController3,
+                          OTPVerificationTextFieldController4:
+                              OTPVerificationTextFieldController4,
+                          OTPVerificationTextFieldController5:
+                              OTPVerificationTextFieldController5,
+                          OTPVerificationTextFieldController6:
+                              OTPVerificationTextFieldController6,
                         ),
                 ),
               ),
+
               const SizedBox(height: 26.0),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -214,12 +234,23 @@ class _OTPScreenState extends State<OTPScreen> {
                 onPressed: () {
                   setState(
                     () {
+                      _formKey.currentState!.validate();
                       if (_isChanged != true) {
-                        _isChanged = !_isChanged;
-                        getUserNumber();
-                        verify();
+                        if (_formKey.currentState!.validate()) {
+                          getUserNumber();
+                          // verify();
+                          print(userCountryNumber + "1");
+
+                          otpAuth.getCodeWithPhoneNumber(
+                            context,
+                            userCountryNumber,
+                          );
+                          _isChanged = !_isChanged;
+                        }
                       } else {
-                        continueToHome();
+                        setState(() {
+                          continueToHome();
+                        });
                       }
                     },
                   );
@@ -231,7 +262,7 @@ class _OTPScreenState extends State<OTPScreen> {
                           color: Color.fromRGBO(249, 249, 249, 1),
                           fontWeight: FontWeight.w500,
                           fontSize: 20.0,
-                          fontFamily: 'Lexend',
+                          fontFamily: 'Karla',
                         ),
                       )
                     : const Text(
@@ -240,7 +271,7 @@ class _OTPScreenState extends State<OTPScreen> {
                           color: Color.fromRGBO(249, 249, 249, 1),
                           fontWeight: FontWeight.w500,
                           fontSize: 20.0,
-                          fontFamily: 'Lexend',
+                          fontFamily: 'Karla',
                         ),
                       ),
               ),
@@ -270,7 +301,20 @@ class _OTPScreenState extends State<OTPScreen> {
                   ),
                 ],
               ),
-              _isChanged ? OTPTImerWidget() : const SizedBox(),
+              _isChanged
+                  ? OTPTImerWidget(
+                      isDone: _isChanged,
+                      executable: () {
+                        // otpAuth.getCodeWithPhoneNumber(
+                        //   context,
+                        //   userCountryNumber,
+                        // );
+                        setState(() {
+                          _isChanged = !_isChanged;
+                        });
+                      },
+                    )
+                  : const SizedBox(),
             ],
           ),
         ),

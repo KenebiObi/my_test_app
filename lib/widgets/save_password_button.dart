@@ -13,13 +13,13 @@ class SavePasswordButton extends StatelessWidget {
         height: 80.0,
         width: 80.0,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primary,
+          color: Colors.grey[300],
           borderRadius: BorderRadius.circular(50.0),
         ),
         child: Icon(
           Icons.save,
-          size: 35.0,
-          color: Colors.grey[300],
+          size: 40.0,
+          color: Theme.of(context).colorScheme.primary,
         ),
       ),
     );

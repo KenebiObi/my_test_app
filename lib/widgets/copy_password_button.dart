@@ -39,9 +39,10 @@ class CopyPasswordButton extends StatelessWidget {
           color: Colors.grey[300],
           borderRadius: BorderRadius.circular(50.0),
         ),
-        child: const Icon(
+        child: Icon(
           Icons.content_copy,
           size: 30.0,
+          color: Theme.of(context).colorScheme.primary,
         ),
       ),
     );

@@ -22,7 +22,7 @@ class _OTPNumberTextFieldState extends State<OTPNumberTextField> {
       children: [
         SizedBox(
           width: 100.0,
-          height: 85.0,
+          height: 83.0,
           child: TextFormField(
             controller: widget.otpCountryCodeController,
             validator: (value) {
@@ -33,7 +33,7 @@ class _OTPNumberTextFieldState extends State<OTPNumberTextField> {
             },
             cursorColor: Theme.of(context).colorScheme.primary,
             style: const TextStyle(
-              fontFamily: 'Lexend',
+              fontFamily: 'Karla',
               color: Colors.black,
             ),
             textInputAction: TextInputAction.next,
@@ -74,7 +74,7 @@ class _OTPNumberTextFieldState extends State<OTPNumberTextField> {
         const SizedBox(width: 5.0),
         Expanded(
           child: SizedBox(
-            height: 85.0,
+            height: 83.0,
             child: TextFormField(
               controller: widget.otpNumberController,
               validator: (value) {
@@ -85,7 +85,7 @@ class _OTPNumberTextFieldState extends State<OTPNumberTextField> {
               },
               cursorColor: Theme.of(context).colorScheme.primary,
               style: const TextStyle(
-                fontFamily: 'Lexend',
+                fontFamily: 'Karla',
                 color: Colors.black,
               ),
               keyboardType: TextInputType.number,

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:my_test_app/modules/user_details.dart';
+import 'package:my_test_app/backend/user_details.dart';
 
 const String USER_DEATILS_COLLECTION_REF = "users";
 
