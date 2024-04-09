@@ -7,7 +7,7 @@ enum ThemeModeType {
 }
 
 class ThemeManager with ChangeNotifier {
-  ThemeModeType _themeMode = ThemeModeType.system;
+  ThemeModeType _themeMode = ThemeModeType.light;
 
   ThemeModeType get themeMode => _themeMode;
 
