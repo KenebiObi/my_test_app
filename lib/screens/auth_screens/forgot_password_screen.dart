@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:my_test_app/widgets/background_screen_decor.dart';
-import 'package:my_test_app/widgets/constants/authscreen_widgets/email_textfield.dart';
+import 'package:EPASS/widgets/background_screen_decor.dart';
+import 'package:EPASS/widgets/constants/authscreen_widgets/email_textfield.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   @override

@@ -1,11 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:my_test_app/widgets/character_option.dart';
-import 'package:my_test_app/widgets/copy_password_button.dart';
-import 'package:my_test_app/widgets/number_picker_widget.dart';
-import 'package:my_test_app/widgets/save_password_button.dart';
-import 'package:my_test_app/widgets/gen_screen_add_pass_dialog.dart';
+import 'package:EPASS/widgets/character_option.dart';
+import 'package:EPASS/widgets/copy_password_button.dart';
+import 'package:EPASS/widgets/number_picker_widget.dart';
+import 'package:EPASS/widgets/save_password_button.dart';
+import 'package:EPASS/widgets/gen_screen_add_pass_dialog.dart';
 
 class GeneratePasswordScreen extends StatefulWidget {
   const GeneratePasswordScreen();

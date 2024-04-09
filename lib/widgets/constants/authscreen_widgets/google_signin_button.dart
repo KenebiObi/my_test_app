@@ -1,7 +1,7 @@
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
-import 'package:my_test_app/backend/google_auth_services.dart';
-import 'package:my_test_app/screens/hidden_drawer_menu_screen.dart';
+import 'package:EPASS/backend/google_auth_services.dart';
+import 'package:EPASS/screens/hidden_drawer_menu_screen.dart';
 
 class GoogleSignInButton extends StatelessWidget {
   const GoogleSignInButton({

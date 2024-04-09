@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:my_test_app/backend/database_service.dart';
-import 'package:my_test_app/backend/user_details.dart';
+import 'package:EPASS/backend/database_service.dart';
+import 'package:EPASS/backend/user_details.dart';
 
 class SavePassBottomSheetWidget extends StatefulWidget {
   const SavePassBottomSheetWidget({

@@ -1,17 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:my_test_app/backend/google_auth_services.dart';
-import 'package:my_test_app/screens/auth_screens/forgot_password_screen.dart';
-import 'package:my_test_app/screens/hidden_drawer_menu_screen.dart';
-import 'package:my_test_app/screens/auth_screens/signup_screen.dart';
-import 'package:my_test_app/widgets/auth_spiner_dialog.dart';
-import 'package:my_test_app/widgets/background_screen_decor.dart';
-import 'package:my_test_app/widgets/constants/authscreen_widgets/auth_state_checker.dart';
-import 'package:my_test_app/widgets/constants/authscreen_widgets/email_textfield.dart';
-import 'package:my_test_app/widgets/constants/authscreen_widgets/google_signin_button.dart';
-import 'package:my_test_app/widgets/constants/authscreen_widgets/password_textfield.dart';
-import 'package:my_test_app/widgets/constants/authscreen_widgets/signup_login_button.dart';
-import 'package:my_test_app/widgets/forgot_password_button.dart';
+import 'package:EPASS/backend/google_auth_services.dart';
+import 'package:EPASS/screens/auth_screens/forgot_password_screen.dart';
+import 'package:EPASS/screens/hidden_drawer_menu_screen.dart';
+import 'package:EPASS/screens/auth_screens/signup_screen.dart';
+import 'package:EPASS/widgets/auth_spiner_dialog.dart';
+import 'package:EPASS/widgets/background_screen_decor.dart';
+import 'package:EPASS/widgets/constants/authscreen_widgets/auth_state_checker.dart';
+import 'package:EPASS/widgets/constants/authscreen_widgets/email_textfield.dart';
+import 'package:EPASS/widgets/constants/authscreen_widgets/google_signin_button.dart';
+import 'package:EPASS/widgets/constants/authscreen_widgets/password_textfield.dart';
+import 'package:EPASS/widgets/constants/authscreen_widgets/signup_login_button.dart';
+import 'package:EPASS/widgets/forgot_password_button.dart';
 
 final _firebase = FirebaseAuth.instance;
 

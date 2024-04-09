@@ -1,4 +1,4 @@
-package com.example.my_test_app
+package com.example.EPASS
 
 import io.flutter.embedding.android.FlutterActivity
 

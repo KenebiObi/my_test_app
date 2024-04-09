@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:908984739654:android:7dd4a66a75f57264e6e747",
         "android_client_info": {
-          "package_name": "com.example.my_test_app"
+          "package_name": "com.example.EPASS"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "908984739654-dn6uocj9nk6s36sdcnsjpmqs4ea2uuhg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.my_test_app",
+            "package_name": "com.example.EPASS",
             "certificate_hash": "272d6485dbef59cac3f204a95031e59aefdd1eb8"
           }
         },

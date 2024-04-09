@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:my_test_app/backend/database_service.dart';
-import 'package:my_test_app/backend/user_details.dart';
+import 'package:EPASS/backend/database_service.dart';
+import 'package:EPASS/backend/user_details.dart';
 
 class SavedPasswordTileWidget extends StatefulWidget {
   SavedPasswordTileWidget({
