@@ -13,6 +13,7 @@ import 'package:my_test_app/screens/auth_screens/signup_screen.dart';
 import "package:my_test_app/screens/splash_screen.dart";
 import 'package:my_test_app/screens/hidden_drawer_menu_screen.dart';
 import "package:my_test_app/theme.dart";
+import "package:provider/provider.dart";
 
 import "firebase_options.dart";
 
@@ -42,68 +43,32 @@ class _PasswordAppState extends State<PasswordApp> {
   @override
   Widget build(BuildContext context) {
     return FirebasePhoneAuthProvider(
-      child: MaterialApp(
-        // theme: ThemeData().copyWith(
-        //   useMaterial3: true,
-        //   colorScheme: appTheme.colorScheme,
-        //   appBarTheme: const AppBarTheme().copyWith(
-        //     backgroundColor: appTheme.colorScheme.onPrimaryContainer,
-        //     foregroundColor: appTheme.colorScheme.primaryContainer,
-        //     // centerTitle: true
-        //   ),
-        //   cardTheme: const CardTheme().copyWith(
-        //     color: appTheme.colorScheme.primaryContainer,
-        //     margin: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 4.0),
-        //   ),
-        //   elevatedButtonTheme: ElevatedButtonThemeData(
-        //     style: ElevatedButton.styleFrom(
-        //       backgroundColor: appTheme.colorScheme.secondaryContainer,
-        //     ),
-        //   ),
-        //   textTheme: ThemeData().textTheme.copyWith(
-        //         titleLarge: TextStyle(
-        //           fontWeight: FontWeight.bold,
-        //           color: appTheme.colorScheme.onPrimaryContainer,
-        //         ),
-        //       ),
-        //   iconTheme: ThemeData().iconTheme.copyWith(
-        //         color: appTheme.colorScheme.onPrimaryContainer,
-        //       ),
-        //   snackBarTheme: ThemeData().snackBarTheme.copyWith(
-        //         backgroundColor: appTheme.colorScheme.onPrimaryContainer,
-        //       ),
-        // ),
-        // darkTheme: ThemeData.dark().copyWith(
-        //   useMaterial3: true,
-        //   colorScheme: darkAppTheme.colorScheme,
-        //   cardTheme: const CardTheme().copyWith(
-        //     color: darkAppTheme.colorScheme.secondaryContainer,
-        //     margin: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 4.0),
-        //   ),
-        //   elevatedButtonTheme: ElevatedButtonThemeData(
-        //     style: ElevatedButton.styleFrom(
-        //       backgroundColor: darkAppTheme.colorScheme.secondaryContainer,
-        //       foregroundColor: darkAppTheme.colorScheme.onPrimaryContainer,
-        //     ),
-        //   ),
-        //   snackBarTheme: ThemeData().snackBarTheme.copyWith(
-        //         backgroundColor: darkAppTheme.colorScheme.onSecondaryContainer,
-        //       ),
-        // ),
-        theme: lighTheme,
-        darkTheme: darkTheme,
-        themeMode: ThemeMode.system,
-        debugShowCheckedModeBanner: false,
-        home: StreamBuilder<User?>(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, userSnapshot) {
-            if (userSnapshot.connectionState == ConnectionState.waiting) {
-              return const SplashScreen();
-            }
-            if (userSnapshot.hasData) {
-              return HiddenDrawer();
-            }
-            return const AuthScreen();
+      child: ChangeNotifierProvider(
+        create: (_) => ThemeManager(),
+        child: Consumer<ThemeManager>(
+          builder: (context, themeManager, _) {
+            return MaterialApp(
+              theme: themeManager.lightThemes,
+              darkTheme: themeManager.darkThemes,
+              themeMode: themeManager.themeMode == ThemeModeType.system
+                  ? ThemeMode.system
+                  : (themeManager.themeMode == ThemeModeType.dark
+                      ? ThemeMode.dark
+                      : ThemeMode.light),
+              debugShowCheckedModeBanner: false,
+              home: StreamBuilder<User?>(
+                stream: FirebaseAuth.instance.authStateChanges(),
+                builder: (context, userSnapshot) {
+                  if (userSnapshot.connectionState == ConnectionState.waiting) {
+                    return const SplashScreen();
+                  }
+                  if (userSnapshot.hasData) {
+                    return HiddenDrawer();
+                  }
+                  return const AuthScreen();
+                },
+              ),
+            );
           },
         ),
       ),

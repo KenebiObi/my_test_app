@@ -7,11 +7,13 @@ class SavePassBottomSheetWidget extends StatefulWidget {
   const SavePassBottomSheetWidget({
     required this.accountController,
     required this.passwordController,
+    required this.executable,
     super.key,
   });
 
   final TextEditingController accountController;
   final TextEditingController passwordController;
+  final void Function() executable;
 
   @override
   State<SavePassBottomSheetWidget> createState() =>
@@ -46,6 +48,11 @@ class _SavePassBottomSheetWidgetState extends State<SavePassBottomSheetWidget> {
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Center(
               child: TextField(
+                textInputAction: TextInputAction.next,
+                style: const TextStyle(
+                  fontSize: 18.0,
+                  color: Colors.black,
+                ),
                 decoration: InputDecoration(
                   labelText: "Name of account",
                   labelStyle: TextStyle(
@@ -67,6 +74,11 @@ class _SavePassBottomSheetWidgetState extends State<SavePassBottomSheetWidget> {
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Center(
               child: TextField(
+                textInputAction: TextInputAction.next,
+                style: const TextStyle(
+                  fontSize: 18.0,
+                  color: Colors.black,
+                ),
                 decoration: InputDecoration(
                   labelText: "Password",
                   labelStyle: TextStyle(
@@ -84,7 +96,10 @@ class _SavePassBottomSheetWidgetState extends State<SavePassBottomSheetWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () {
+                  widget.executable();
+                  Navigator.pop(context);
+                },
                 child: const Text(
                   "Cancel",
                   style: TextStyle(fontSize: 20.0),
@@ -112,6 +127,7 @@ class _SavePassBottomSheetWidgetState extends State<SavePassBottomSheetWidget> {
                   Navigator.pop(context);
                   widget.accountController.clear();
                   widget.passwordController.clear();
+                  widget.executable();
                 },
                 child: const Text(
                   "Save",

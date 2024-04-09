@@ -6,6 +6,8 @@ import 'package:my_test_app/screens/auth_screens/auth_screen.dart';
 import 'package:my_test_app/screens/generate_password_screen.dart';
 import 'package:my_test_app/screens/home_page.dart';
 import 'package:my_test_app/screens/save_password_screen.dart';
+import 'package:my_test_app/theme.dart';
+import 'package:provider/provider.dart';
 
 final _firebase = FirebaseAuth.instance;
 
@@ -107,6 +109,22 @@ class _HiddenDrawerState extends State<HiddenDrawer> {
       backgroundColorMenu: Theme.of(context).colorScheme.primary,
       initPositionSelected: 0,
       actionsAppBar: [
+        IconButton(
+          onPressed: () {
+            final themeManager =
+                Provider.of<ThemeManager>(context, listen: false);
+            themeManager.toggleTheme();
+          },
+          icon: Icon(
+            Provider.of<ThemeManager>(context).themeMode == ThemeModeType.dark
+                ? Icons.light_mode
+                : Icons.dark_mode,
+            color: Provider.of<ThemeManager>(context).themeMode ==
+                    ThemeModeType.dark
+                ? Colors.yellow
+                : Colors.indigo[900],
+          ),
+        ),
         Row(
           children: [
             IconButton(

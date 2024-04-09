@@ -23,6 +23,7 @@ class _EmailTextfieldState extends State<EmailTextfield> {
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Center(
         child: TextFormField(
+          textInputAction: TextInputAction.next,
           controller: widget.emialController,
           validator: (value) {
             if (value == null || value.isEmpty || !value.contains("@")) {

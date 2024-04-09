@@ -28,6 +28,7 @@ class _PasswordTextfieldState extends State<PasswordTextfield> {
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Center(
         child: TextFormField(
+          textInputAction: TextInputAction.next,
           controller: widget.passwordController,
           validator: (value) {
             if (value == null || value.isEmpty || value.trim().length < 6) {

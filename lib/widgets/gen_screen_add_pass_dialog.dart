@@ -41,6 +41,7 @@ class _GenScreenAddPassDialogState extends State<GenScreenAddPassDialog> {
               ),
               child: Center(
                 child: TextField(
+                  textInputAction: TextInputAction.next,
                   style: const TextStyle(
                     fontFamily: "Karla",
                     fontSize: 18.0,

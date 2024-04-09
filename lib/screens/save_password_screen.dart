@@ -98,6 +98,8 @@ class _SavePasswordScreenState extends State<SavePasswordScreen> {
                           MediaQuery.of(context).platformBrightness;
                       bool isDarkMode = brightness == Brightness.dark;
                       showModalBottomSheet(
+                        isScrollControlled: true,
+                        showDragHandle: true,
                         backgroundColor: isDarkMode
                             ? Theme.of(context).colorScheme.background
                             : Colors.blue[50],
@@ -106,10 +108,17 @@ class _SavePasswordScreenState extends State<SavePasswordScreen> {
                         builder: (ctx) => SavePassBottomSheetWidget(
                           accountController: _accountController,
                           passwordController: _passwordController,
+                          executable: () {
+                            setState(() {});
+                          },
                         ),
-                      ).then((_) {
-                        setState(() {});
-                      });
+                      );
+                      // .then((_) {
+                      //   setState(() {
+                      //     _accountController.clear();
+                      //     _passwordController.clear();
+                      //   });
+                      // });
                     },
                     style: ElevatedButton.styleFrom(),
                     icon: const Icon(Icons.add),
@@ -123,7 +132,7 @@ class _SavePasswordScreenState extends State<SavePasswordScreen> {
                   Text(
                     userDetailsLength == 0
                         ? "No Passwords"
-                        : userDetailsLength == 1
+                        : userDetailsLength > 1
                             ? "$userDetailsLength Password"
                             : "$userDetailsLength Passwords",
                     style: const TextStyle(

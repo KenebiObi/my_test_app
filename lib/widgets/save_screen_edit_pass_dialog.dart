@@ -34,6 +34,7 @@ class _SaveScreenEditPassDialogState extends State<SaveScreenEditPassDialog> {
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Center(
               child: TextField(
+                textInputAction: TextInputAction.next,
                 style: const TextStyle(
                   fontFamily: "Karla",
                   fontSize: 18.0,
@@ -60,6 +61,7 @@ class _SaveScreenEditPassDialogState extends State<SaveScreenEditPassDialog> {
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Center(
               child: TextField(
+                textInputAction: TextInputAction.next,
                 style: const TextStyle(
                   fontFamily: "Karla",
                   fontSize: 18.0,
