@@ -13,7 +13,7 @@ class SignUpLoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        shadowColor: Theme.of(context).primaryColorLight,
+        shadowColor: Colors.grey[600],
         surfaceTintColor: Theme.of(context).colorScheme.background,
         elevation: 10.0,
         shape: RoundedRectangleBorder(

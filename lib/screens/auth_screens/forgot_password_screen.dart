@@ -59,14 +59,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   children: [
                     IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.arrow_back_ios_rounded,
                         size: 30.0,
-                        color: Theme.of(context).colorScheme.background,
+                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(width: 10.0),
-                    SizedBox(
+                    const SizedBox(
                       width: 150.0,
                       child: Text(
                         "Forgot Password",
@@ -77,7 +77,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           fontFamily: "Lexend",
                           letterSpacing: 0.5,
                           fontWeight: FontWeight.w800,
-                          color: Theme.of(context).colorScheme.background,
+                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -95,7 +95,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         ? const CircularProgressIndicator()
                         : ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              shadowColor: Theme.of(context).primaryColorLight,
+                              shadowColor: Colors.grey[600],
                               surfaceTintColor:
                                   Theme.of(context).colorScheme.background,
                               elevation: 10.0,

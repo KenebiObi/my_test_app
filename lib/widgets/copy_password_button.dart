@@ -6,6 +6,8 @@ class CopyPasswordButton extends StatelessWidget {
   String clipBoardText;
   @override
   Widget build(BuildContext context) {
+    Brightness brightness = MediaQuery.of(context).platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
     return GestureDetector(
       onTap: () {
         Clipboard.setData(
@@ -36,13 +38,17 @@ class CopyPasswordButton extends StatelessWidget {
         height: 80.0,
         width: 80.0,
         decoration: BoxDecoration(
-          color: Colors.grey[300],
+          color: isDarkMode
+              ? Theme.of(context).primaryColorLight
+              : Colors.grey[300],
           borderRadius: BorderRadius.circular(50.0),
         ),
         child: Icon(
           Icons.content_copy,
           size: 30.0,
-          color: Theme.of(context).colorScheme.primary,
+          color: isDarkMode
+              ? Theme.of(context).colorScheme.background
+              : Theme.of(context).colorScheme.primary,
         ),
       ),
     );

@@ -33,11 +33,10 @@ class AuthScreen extends StatelessWidget {
                   ),
                 );
               },
-              child: Text(
+              child: const Text(
                 softWrap: true,
                 "Sign Up",
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.background,
                   fontWeight: FontWeight.w700,
                   fontSize: 20.0,
                   fontFamily: 'Karla',
@@ -75,63 +74,6 @@ class AuthScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 40.0),
-            const Stack(
-              children: [
-                // Positioned(
-                //   // bottom: 0,
-                //   child: Container(
-                //     height: 100.0,
-                //     width: 200.0,
-                //     decoration: BoxDecoration(
-                //       borderRadius: const BorderRadius.only(
-                //         topRight: Radius.circular(20.0),
-                //         bottomRight: Radius.circular(20.0),
-                //       ),
-                //       border: Border.all(
-                //         width: 1.5,
-                //         color: Theme.of(context).colorScheme.primary,
-                //       ),
-                //     ),
-                //     child: Center(
-                //       child: Text(
-                //         "Sign Up",
-                //         style: TextStyle(
-                //           color: Theme.of(context).colorScheme.primary,
-                //           fontWeight: FontWeight.w700,
-                //           fontSize: 20.0,
-                //           fontFamily: 'Karla',
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-                // ),
-                // Positioned(
-                //   // top: 300,
-                //   child: Container(
-                //     height: 100.0,
-                //     width: 200.0,
-                //     decoration: BoxDecoration(
-                //       color: Theme.of(context).colorScheme.primary,
-                //       borderRadius: const BorderRadius.only(
-                //         topRight: Radius.circular(20.0),
-                //         bottomRight: Radius.circular(20.0),
-                //       ),
-                //     ),
-                //     child: const Center(
-                //       child: Text(
-                //         "Login ",
-                //         style: TextStyle(
-                //           color: Theme.of(context).colorScheme.background,
-                //           fontWeight: FontWeight.w700,
-                //           fontSize: 20.0,
-                //           fontFamily: 'Karla',
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-                // )
-              ],
-            ),
           ],
         ),
       ),

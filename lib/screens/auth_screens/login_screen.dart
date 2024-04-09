@@ -93,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
         screen: SafeArea(
           child: Stack(
             children: [
-              Positioned(
+              const Positioned(
                 top: 50.0,
                 left: 50.0,
                 child: Text(
@@ -103,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     fontFamily: "Lexend",
                     letterSpacing: 0.5,
                     fontWeight: FontWeight.w800,
-                    color: Theme.of(context).colorScheme.background,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -135,13 +135,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           const SizedBox(height: 5.0),
-                          Text(
+                          const Text(
                             "You've been missed!",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               letterSpacing: 0.5,
                               fontSize: 22.0,
-                              color: Theme.of(context).colorScheme.secondary,
                             ),
                           ),
                           const SizedBox(height: 30.0),

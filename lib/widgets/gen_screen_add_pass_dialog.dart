@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_test_app/backend/database_service.dart';
 import 'package:my_test_app/backend/user_details.dart';
-import 'package:my_test_app/backend/user_password.dart';
 
 class GenScreenAddPassDialog extends StatefulWidget {
   GenScreenAddPassDialog({
@@ -24,48 +23,57 @@ class _GenScreenAddPassDialogState extends State<GenScreenAddPassDialog> {
 
   @override
   Widget build(BuildContext context) {
+    Brightness brightness = MediaQuery.of(context).platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
     return AlertDialog(
       title: const Text("Save Password"),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TextField(
-            decoration: InputDecoration(
-              hintText: "Name of account",
-              labelText: "Name of account",
-              labelStyle: TextStyle(
+      content: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.11,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.secondary,
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  width: 2.0,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                borderRadius: BorderRadius.circular(15.0),
-              ),
-              border: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
                 borderRadius: BorderRadius.circular(20.0),
               ),
-            ),
-            controller: widget.controller,
-          ),
-          const SizedBox(height: 15.0),
-
-          widget.passwordText.isEmpty
-              ? const SizedBox()
-              : Text(
-                  widget.passwordText,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Theme.of(context).colorScheme.primary,
+              child: Center(
+                child: TextField(
+                  style: const TextStyle(
+                    fontFamily: "Karla",
+                    fontSize: 18.0,
+                    color: Colors.black,
                   ),
+                  decoration: InputDecoration(
+                    labelText: "Name of account",
+                    labelStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      fontSize: 18.0,
+                    ),
+                    border: InputBorder.none,
+                  ),
+                  controller: widget.controller,
                 ),
-          // Spacer(),
-        ],
+              ),
+            ),
+            const SizedBox(height: 15.0),
+
+            widget.passwordText.isEmpty
+                ? const SizedBox()
+                : Text(
+                    widget.passwordText,
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: isDarkMode
+                          ? Colors.white
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+            // Spacer(),
+          ],
+        ),
       ),
       actions: [
         Row(

@@ -17,29 +17,32 @@ class _EmailTextfieldState extends State<EmailTextfield> {
     return Container(
       // height: 50.0,
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColorLight,
+        color: Theme.of(context).colorScheme.secondary,
         borderRadius: BorderRadius.circular(20.0),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: TextFormField(
-        controller: widget.emialController,
-        validator: (value) {
-          if (value == null || value.isEmpty || !value.contains("@")) {
-            return "Please enter a valid email";
-          }
-          return null;
-        },
-        keyboardType: TextInputType.emailAddress,
-        style: const TextStyle(
-          fontFamily: "Karla",
-          fontSize: 18.0,
-        ),
-        decoration: InputDecoration(
-          labelText: "Email Address",
-          labelStyle: TextStyle(
-            color: Theme.of(context).colorScheme.secondary,
+      child: Center(
+        child: TextFormField(
+          controller: widget.emialController,
+          validator: (value) {
+            if (value == null || value.isEmpty || !value.contains("@")) {
+              return "Please enter a valid email";
+            }
+            return null;
+          },
+          keyboardType: TextInputType.emailAddress,
+          style: const TextStyle(
+            fontFamily: "Karla",
+            fontSize: 18.0,
+            color: Colors.black,
           ),
-          border: InputBorder.none,
+          decoration: InputDecoration(
+            labelText: "Email Address",
+            labelStyle: TextStyle(
+              color: Theme.of(context).colorScheme.tertiary,
+            ),
+            border: InputBorder.none,
+          ),
         ),
       ),
     );

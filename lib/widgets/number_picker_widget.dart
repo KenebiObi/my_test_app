@@ -15,24 +15,31 @@ class NumberPickerWidget extends StatefulWidget {
 class _NumberPickerWidgetState extends State<NumberPickerWidget> {
   @override
   Widget build(BuildContext context) {
+    Brightness brightness = MediaQuery.of(context).platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
     return Expanded(
       child: Container(
         height: 80.0,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(50.0),
-          color: Theme.of(context).colorScheme.primary,
-        ),
+        decoration: isDarkMode
+            ? BoxDecoration(
+                borderRadius: BorderRadius.circular(50.0),
+                color: Theme.of(context).colorScheme.secondary,
+              )
+            : BoxDecoration(
+                borderRadius: BorderRadius.circular(50.0),
+                color: Theme.of(context).colorScheme.primary,
+              ),
         child: Center(
           child: NumberPicker(
             axis: Axis.horizontal,
             itemWidth: 50.0,
             selectedTextStyle: TextStyle(
-              color: Theme.of(context).colorScheme.background,
-              fontSize: 30.0,
+              color: isDarkMode ? Colors.black : Colors.white,
+              fontSize: 35.0,
             ),
             textStyle: TextStyle(
-              color: Theme.of(context).colorScheme.background,
-              fontSize: 18.0,
+              color: isDarkMode ? Colors.black : Colors.grey[300],
+              fontSize: 20.0,
             ),
             minValue: 0,
             maxValue: 20,

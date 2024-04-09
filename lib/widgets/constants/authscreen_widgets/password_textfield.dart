@@ -22,41 +22,45 @@ class _PasswordTextfieldState extends State<PasswordTextfield> {
     return Container(
       // height: 60.0,
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColorLight,
+        color: Theme.of(context).colorScheme.secondary,
         borderRadius: BorderRadius.circular(20.0),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: TextFormField(
-        controller: widget.passwordController,
-        validator: (value) {
-          if (value == null || value.isEmpty || value.trim().length < 6) {
-            return "Please enter a password containing more than 6 characters";
-          }
-          return null;
-        },
-        keyboardType: TextInputType.visiblePassword,
-        obscureText: !widget.isChanged ? true : false,
-        style: const TextStyle(
-          fontFamily: "Karla",
-          fontSize: 18.0,
-        ),
-        decoration: InputDecoration(
-          labelText: widget.isConfirmPassword ? "Confirm password" : "Password",
-          labelStyle: TextStyle(
-            color: Theme.of(context).colorScheme.secondary,
+      child: Center(
+        child: TextFormField(
+          controller: widget.passwordController,
+          validator: (value) {
+            if (value == null || value.isEmpty || value.trim().length < 6) {
+              return "Please enter a password containing more than 6 characters";
+            }
+            return null;
+          },
+          keyboardType: TextInputType.visiblePassword,
+          obscureText: !widget.isChanged ? true : false,
+          style: const TextStyle(
             fontFamily: "Karla",
-            fontWeight: FontWeight.w400,
+            fontSize: 18.0,
+            color: Colors.black,
           ),
-          border: InputBorder.none,
-          suffixIcon: IconButton(
-            onPressed: () {
-              setState(() {
-                widget.isChanged = !widget.isChanged;
-              });
-            },
-            icon: Icon(
-              widget.isChanged ? Icons.visibility_off : Icons.visibility,
-              color: Colors.grey[700],
+          decoration: InputDecoration(
+            labelText:
+                widget.isConfirmPassword ? "Confirm password" : "Password",
+            labelStyle: TextStyle(
+              color: Theme.of(context).colorScheme.tertiary,
+              fontFamily: "Karla",
+              fontWeight: FontWeight.w400,
+            ),
+            border: InputBorder.none,
+            suffixIcon: IconButton(
+              onPressed: () {
+                setState(() {
+                  widget.isChanged = !widget.isChanged;
+                });
+              },
+              icon: Icon(
+                widget.isChanged ? Icons.visibility_off : Icons.visibility,
+                color: Colors.grey[700],
+              ),
             ),
           ),
         ),

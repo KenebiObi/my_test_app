@@ -12,6 +12,7 @@ import 'package:my_test_app/extras/otp_screen.dart';
 import 'package:my_test_app/screens/auth_screens/signup_screen.dart';
 import "package:my_test_app/screens/splash_screen.dart";
 import 'package:my_test_app/screens/hidden_drawer_menu_screen.dart';
+import "package:my_test_app/theme.dart";
 
 import "firebase_options.dart";
 
@@ -29,21 +30,6 @@ void main() async {
   runApp(PasswordApp());
   FlutterNativeSplash.remove();
 }
-
-final appTheme = ThemeData(
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: const Color.fromRGBO(42, 82, 117, 1.000),
-  ),
-  fontFamily: "Karla",
-  useMaterial3: true,
-);
-final darkAppTheme = ThemeData(
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: const Color.fromRGBO(45, 84, 117, 1.000),
-  ),
-  fontFamily: "Karla",
-  useMaterial3: true,
-);
 
 class PasswordApp extends StatefulWidget {
   const PasswordApp({super.key});
@@ -104,8 +90,9 @@ class _PasswordAppState extends State<PasswordApp> {
         //         backgroundColor: darkAppTheme.colorScheme.onSecondaryContainer,
         //       ),
         // ),
-        theme: appTheme,
-        themeMode: ThemeMode.light,
+        theme: lighTheme,
+        darkTheme: darkTheme,
+        themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,
         home: StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),

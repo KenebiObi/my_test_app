@@ -1,5 +1,6 @@
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
 import 'package:my_test_app/screens/auth_screens/auth_screen.dart';
 import 'package:my_test_app/screens/generate_password_screen.dart';
@@ -62,6 +63,8 @@ class _HiddenDrawerState extends State<HiddenDrawer> {
   void logout() {
     if (_firebase.currentUser != null) {
       FirebaseAuth.instance.signOut();
+      GoogleSignIn().signOut();
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -80,9 +83,26 @@ class _HiddenDrawerState extends State<HiddenDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    Brightness brightness = MediaQuery.of(context).platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
     return HiddenDrawerMenu(
       elevationAppBar: 0,
       contentCornerRadius: 20.0,
+      slidePercent: 65.0,
+      withShadow: true,
+      boxShadow: [
+        isDarkMode
+            ? BoxShadow(
+                color: Theme.of(context)
+                    .colorScheme
+                    .background
+                    .withOpacity(0.7), // Shadow color
+                spreadRadius: 5.0, // Spread radius
+                blurRadius: 60.0, // Blur radius
+                offset: const Offset(-15.0, 20.0), // Offset
+              )
+            : const BoxShadow(color: Colors.transparent),
+      ],
       screens: _pages,
       backgroundColorMenu: Theme.of(context).colorScheme.primary,
       initPositionSelected: 0,

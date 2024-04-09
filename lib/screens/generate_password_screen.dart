@@ -86,159 +86,190 @@ class _GeneratePasswordScreenState extends State<GeneratePasswordScreen> {
     // final deviceWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: 30.0),
-            Container(
-              height: 150.0,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColorLight,
-                borderRadius: BorderRadius.circular(20.0),
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Theme.of(context).colorScheme.background,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 100.0),
+              Container(
+                height: 150.0,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondary,
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        right: 30.0,
+                        top: 30.0,
+                      ),
+                      child: Row(
+                        children: [
+                          const Spacer(),
+                          Text(
+                            ("${mainValue.toString()} Characters"),
+                            style: TextStyle(
+                              color: Colors.grey[700],
+                              fontSize: 18.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 5.0),
+                    Text(
+                      _randomPassword,
+                      style: TextStyle(
+                        fontSize: 30.0,
+                        color: Theme.of(context).colorScheme.tertiary,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 15.0,
+                        // top: 20.0,
+                      ),
+                      child: Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                generatePassword();
+                              });
+                            },
+                            icon: Icon(
+                              Icons.autorenew,
+                              size: 30.0,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                          const Spacer()
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              const SizedBox(height: 30.0),
+              CharacterOptionWidget(
+                icon: Icons.text_fields_rounded,
+                color: _addLowerCase
+                    ? Theme.of(context).primaryColorLight
+                    : Theme.of(context).colorScheme.background,
+                chracterSelection: "Add lower case characters",
+                onTap: () {
+                  setState(() {
+                    _addLowerCase = !_addLowerCase;
+                  });
+
+                  print(_addLowerCase);
+                  if (_addLowerCase) {
+                    options.add('lower');
+                  } else {
+                    options.remove('lower');
+                  }
+                },
+              ),
+              CharacterOptionWidget(
+                icon: Icons.text_fields_rounded,
+                color: _addUpperCase
+                    ? Theme.of(context).primaryColorLight
+                    : Theme.of(context).colorScheme.background,
+                chracterSelection: "Add upper case characters",
+                onTap: () {
+                  setState(() {
+                    _addUpperCase = !_addUpperCase;
+                  });
+
+                  print(_addUpperCase);
+                  if (_addUpperCase) {
+                    options.add('upper');
+                  } else {
+                    options.remove('upper');
+                  }
+                },
+              ),
+              CharacterOptionWidget(
+                icon: Icons.looks_one_rounded,
+                color: _addNumbers
+                    ? Theme.of(context).primaryColorLight
+                    : Theme.of(context).colorScheme.background,
+                chracterSelection: "Add numbers",
+                onTap: () {
+                  setState(() {
+                    _addNumbers = !_addNumbers;
+                  });
+
+                  print(_addUpperCase);
+                  if (_addNumbers) {
+                    options.add('nums');
+                  } else {
+                    options.remove('nums');
+                  }
+                },
+              ),
+              CharacterOptionWidget(
+                icon: Icons.star_rate_rounded,
+                color: _addSymbols
+                    ? Theme.of(context).primaryColorLight
+                    : Theme.of(context).colorScheme.background,
+                chracterSelection: "Add special characters",
+                onTap: () {
+                  setState(() {
+                    _addSymbols = !_addSymbols;
+                  });
+                  print(_addUpperCase);
+                  if (_addSymbols) {
+                    options.add('special');
+                  } else {
+                    options.remove('special');
+                  }
+                },
+              ),
+              const SizedBox(height: 15.0),
+              // Spacer(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      right: 30.0,
-                      top: 30.0,
-                    ),
-                    child: Row(
-                      children: [
-                        const Spacer(),
-                        Text(
-                          ("${mainValue.toString()} Characters"),
+                  CopyPasswordButton(clipBoardText: _randomPassword),
+                  const SizedBox(width: 30.0),
+                  NumberPickerWidget(
+                    mainValue: mainValue,
+                    executable: (newValue) {
+                      setState(
+                        () {
+                          mainValue = newValue;
+                          print(mainValue);
+                          generatePassword();
+                        },
+                      );
+                    },
+                  ),
+                  const SizedBox(width: 30.0),
+                  SavePasswordButton(
+                    onTap: () {
+                      _password = _randomPassword; // MAIN PASSWORD
+                      showDialog(
+                        context: context,
+                        builder: (context) => GenScreenAddPassDialog(
+                          controller: _accountController,
+                          passwordText: _password,
                         ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 5.0),
-                  Text(
-                    _randomPassword,
-                    style: TextStyle(
-                      fontSize: 30.0,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
+                      );
+                    },
+                  )
                 ],
               ),
-            ),
-            const SizedBox(height: 30.0),
-            CharacterOptionWidget(
-              icon: Icons.text_fields_rounded,
-              color: _addLowerCase
-                  ? Theme.of(context).primaryColorLight
-                  : Theme.of(context).colorScheme.background,
-              chracterSelection: "Add lower case characters",
-              onTap: () {
-                setState(() {
-                  _addLowerCase = !_addLowerCase;
-                });
-
-                print(_addLowerCase);
-                if (_addLowerCase) {
-                  options.add('lower');
-                } else {
-                  options.remove('lower');
-                }
-              },
-            ),
-            CharacterOptionWidget(
-              icon: Icons.text_fields_rounded,
-              color: _addUpperCase
-                  ? Theme.of(context).primaryColorLight
-                  : Theme.of(context).colorScheme.background,
-              chracterSelection: "Add upper case characters",
-              onTap: () {
-                setState(() {
-                  _addUpperCase = !_addUpperCase;
-                });
-
-                print(_addUpperCase);
-                if (_addUpperCase) {
-                  options.add('upper');
-                } else {
-                  options.remove('upper');
-                }
-              },
-            ),
-            CharacterOptionWidget(
-              icon: Icons.looks_one_rounded,
-              color: _addNumbers
-                  ? Theme.of(context).primaryColorLight
-                  : Theme.of(context).colorScheme.background,
-              chracterSelection: "Add numbers",
-              onTap: () {
-                setState(() {
-                  _addNumbers = !_addNumbers;
-                });
-
-                print(_addUpperCase);
-                if (_addNumbers) {
-                  options.add('nums');
-                } else {
-                  options.remove('nums');
-                }
-              },
-            ),
-            CharacterOptionWidget(
-              icon: Icons.star_rate_rounded,
-              color: _addSymbols
-                  ? Theme.of(context).primaryColorLight
-                  : Theme.of(context).colorScheme.background,
-              chracterSelection: "Add special characters",
-              onTap: () {
-                setState(() {
-                  _addSymbols = !_addSymbols;
-                });
-                print(_addUpperCase);
-                if (_addSymbols) {
-                  options.add('special');
-                } else {
-                  options.remove('special');
-                }
-              },
-            ),
-            const SizedBox(height: 15.0),
-            // Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CopyPasswordButton(clipBoardText: _randomPassword),
-                const SizedBox(width: 15.0),
-                NumberPickerWidget(
-                  mainValue: mainValue,
-                  executable: (newValue) {
-                    setState(
-                      () {
-                        mainValue = newValue;
-                        print(mainValue);
-                        generatePassword();
-                      },
-                    );
-                  },
-                ),
-                const SizedBox(width: 15.0),
-                SavePasswordButton(
-                  onTap: () {
-                    _password = _randomPassword; // MAIN PASSWORD
-                    showDialog(
-                      context: context,
-                      builder: (context) => GenScreenAddPassDialog(
-                        controller: _accountController,
-                        passwordText: _password,
-                      ),
-                    );
-                  },
-                )
-              ],
-            ),
-            const SizedBox(height: 50.0),
-          ],
+              const SizedBox(height: 50.0),
+            ],
+          ),
         ),
       ),
     );

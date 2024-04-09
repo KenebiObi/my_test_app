@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:my_test_app/backend/database_service.dart';
 import 'package:my_test_app/backend/user_details.dart';
 
 class SavedPasswordTileWidget extends StatefulWidget {
@@ -8,6 +9,7 @@ class SavedPasswordTileWidget extends StatefulWidget {
     required this.altFunction,
     required this.userdetail,
     required this.passwordForCopy,
+    required this.encryptedPassword,
     required this.index,
     Key? key,
   }) : super(key: key);
@@ -15,6 +17,7 @@ class SavedPasswordTileWidget extends StatefulWidget {
   final void Function() altFunction;
   final UserDetails userdetail;
   final String passwordForCopy;
+  final String encryptedPassword;
   final int index;
 
   @override
@@ -23,6 +26,8 @@ class SavedPasswordTileWidget extends StatefulWidget {
 }
 
 class _SavedPasswordTileWidgetState extends State<SavedPasswordTileWidget> {
+  final DataBaseServices _dataBaseServices = DataBaseServices();
+
   late bool _isVisible;
 
   @override
@@ -33,6 +38,9 @@ class _SavedPasswordTileWidgetState extends State<SavedPasswordTileWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final decryptedPassword =
+        _dataBaseServices.decryptPassword(widget.encryptedPassword);
+
     return Container(
       padding: const EdgeInsets.all(12.0),
       width: MediaQuery.of(context).size.width * 0.90,
@@ -47,38 +55,40 @@ class _SavedPasswordTileWidgetState extends State<SavedPasswordTileWidget> {
           SizedBox(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 100,
-                      child: Text(
-                        softWrap: true,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        widget.userdetail.account,
-                        style: const TextStyle(
-                          fontSize: 18.0,
+                Padding(
+                  padding: const EdgeInsets.only(top: 3.0, left: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 100,
+                        child: Text(
+                          softWrap: true,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          widget.userdetail.account,
+                          style: const TextStyle(
+                            fontSize: 18.0,
+                          ),
                         ),
                       ),
-                    ),
-                    // const Spacer(),
-                    SizedBox(
-                      width: 100,
-                      child: Text(
-                        _isVisible
-                            ? widget.userdetail.password
-                            : '*' * widget.userdetail.password.length,
-                        softWrap: true,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.tertiary,
+                      // const Spacer(),
+                      SizedBox(
+                        width: 100,
+                        child: Text(
+                          _isVisible
+                              ? decryptedPassword
+                              // widget.userdetail.password
+                              : '*' * decryptedPassword.length,
+                          softWrap: true,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 IconButton(
                   onPressed: () {
@@ -161,7 +171,7 @@ class _SavedPasswordTileWidgetState extends State<SavedPasswordTileWidget> {
 //               width: double.infinity,
 //               height: 70.0,
 //               decoration: BoxDecoration(
-//                 color: Theme.of(context).primaryColorLight,
+//                 color: Theme.of(context).colorScheme.secondary,
 //                 borderRadius: BorderRadius.circular(10.0),
 //               ),
 //               child: Column(

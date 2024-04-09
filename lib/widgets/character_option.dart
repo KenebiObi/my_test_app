@@ -33,7 +33,7 @@ class _CharacterOptionWidgetState extends State<CharacterOptionWidget> {
             color: widget.color,
             // border: Border.all(
             //   width: 2.0,
-            //   color: Theme.of(context).primaryColorLight,
+            //   color: Theme.of(context).colorScheme.secondary,
             // ),
             borderRadius: BorderRadius.circular(20.0),
           ),
