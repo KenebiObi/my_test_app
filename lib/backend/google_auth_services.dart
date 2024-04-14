@@ -22,7 +22,8 @@ class GoogleAuthService {
   Future<User?> signInWithGoogle() async {
     try {
       final _googleSignIn = GoogleSignIn();
-      await _googleSignIn.signOut();
+      // await _googleSignIn.signOut();
+
       final GoogleSignInAccount? gUser = await _googleSignIn.signIn();
       if (gUser == null) {
         // User cancelled sign-in

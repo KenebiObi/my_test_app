@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "EPASS",
+            "name": "my_test_app",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "EPASS (profile mode)",
+            "name": "my_test_app (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "EPASS (release mode)",
+            "name": "my_test_app (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

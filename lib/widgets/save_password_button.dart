@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SavePasswordButton extends StatelessWidget {
-  SavePasswordButton({required this.onTap, super.key});
+class Savmy_test_appwordButton extends StatelessWidget {
+  Savmy_test_appwordButton({required this.onTap, super.key});
 
   final void Function() onTap;
 

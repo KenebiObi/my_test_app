@@ -1,9 +1,9 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/material.dart';
 // import 'package:google_nav_bar/google_nav_bar.dart';
-// import 'package:EPASS/screens/generate_password_screen.dart';
-// import 'package:EPASS/screens/auth_screens/auth_screen.dart';
-// import 'package:EPASS/screens/save_password_screen.dart';
+// import 'package:my_test_app/screens/generate_password_screen.dart';
+// import 'package:my_test_app/screens/auth_screens/auth_screen.dart';
+// import 'package:my_test_app/screens/save_password_screen.dart';
 
 // final _firebase = FirebaseAuth.instance;
 
@@ -37,8 +37,8 @@
 //   bool onTapBottomNavBarIcon = false;
 //   int currentIndex = 0;
 //   List<Widget> screens = [
-//     const GeneratePasswordScreen(),
-//     SavePasswordScreen(
+//     const Generatmy_test_appwordScreen(),
+//     Savmy_test_appwordScreen(
 //       saveDetails: null,
 //     ),
 //   ];

@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
-import 'package:EPASS/screens/auth_screens/login_screen.dart';
-import 'package:EPASS/screens/auth_screens/signup_screen.dart';
+import 'package:my_test_app/screens/auth_screens/login_screen.dart';
+import 'package:my_test_app/screens/auth_screens/signup_screen.dart';
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});
@@ -15,7 +15,7 @@ class AuthScreen extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(height: deviceHeight - 696.8),
-            Image.asset("assets/images/epass_img.png"),
+            Image.asset("assets/images/my_test_app_img.png"),
             const Spacer(),
             ElevatedButton(
               style: ElevatedButton.styleFrom(

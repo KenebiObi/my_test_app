@@ -2,11 +2,11 @@ import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
-import 'package:EPASS/screens/auth_screens/auth_screen.dart';
-import 'package:EPASS/screens/generate_password_screen.dart';
-import 'package:EPASS/screens/home_page.dart';
-import 'package:EPASS/screens/save_password_screen.dart';
-import 'package:EPASS/theme.dart';
+import 'package:my_test_app/screens/auth_screens/auth_screen.dart';
+import 'package:my_test_app/screens/generate_password_screen.dart';
+import 'package:my_test_app/screens/home_page.dart';
+import 'package:my_test_app/screens/save_password_screen.dart';
+import 'package:my_test_app/theme.dart';
 import 'package:provider/provider.dart';
 
 final _firebase = FirebaseAuth.instance;
@@ -39,7 +39,7 @@ class _HiddenDrawerState extends State<HiddenDrawer> {
             fontFamily: "Karla",
           ),
         ),
-        const GeneratePasswordScreen(),
+        const Generatmy_test_appwordScreen(),
       ),
       ScreenHiddenDrawer(
         ItemHiddenMenu(
@@ -55,7 +55,7 @@ class _HiddenDrawerState extends State<HiddenDrawer> {
             fontFamily: "Karla",
           ),
         ),
-        SavePasswordScreen(
+        Savmy_test_appwordScreen(
           saveDetails: null,
         ),
       ),

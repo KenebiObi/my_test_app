@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:EPASS/screens/generate_password_screen.dart';
-import 'package:EPASS/screens/home_page.dart';
+import 'package:my_test_app/screens/generate_password_screen.dart';
+import 'package:my_test_app/screens/home_page.dart';
 
 class OTP {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -94,7 +94,7 @@ class OTP {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => const GeneratePasswordScreen()),
+              builder: (context) => const Generatmy_test_appwordScreen()),
         );
       }
     });

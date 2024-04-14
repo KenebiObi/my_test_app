@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:EPASS/extras/otp_auth.dart';
-import 'package:EPASS/screens/home_page.dart';
-import 'package:EPASS/extras/otp_timer_widget.dart';
-import 'package:EPASS/extras/otp_verification_textfield.dart';
-import 'package:EPASS/extras/otp_number_textfield.dart';
-import 'package:EPASS/extras/otp_verification_textfields.dart';
+import 'package:my_test_app/extras/otp_auth.dart';
+import 'package:my_test_app/screens/home_page.dart';
+import 'package:my_test_app/extras/otp_timer_widget.dart';
+import 'package:my_test_app/extras/otp_verification_textfield.dart';
+import 'package:my_test_app/extras/otp_number_textfield.dart';
+import 'package:my_test_app/extras/otp_verification_textfields.dart';
 
 class OTPScreen extends StatefulWidget {
   const OTPScreen({super.key});
